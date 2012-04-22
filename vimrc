@@ -11,7 +11,7 @@ set diffopt+=iwhite
 set t_Co=256
 
 " Powerline
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 13
 let g:Powerline_symbols='fancy'
 set fillchars+=stl:\ ,stlnc:\
 set laststatus=2
@@ -62,8 +62,8 @@ set smarttab
 set softtabstop=2
 set cindent
 
-set directory=/usr/home/amorse/.vim/tmp
-set backupdir=/usr/home/amorse/.vim/backup
+let directory=$HOME . '/.vim/tmp'
+let backupdir=$HOME . '/.vim/backup'
 
 set hidden
 
