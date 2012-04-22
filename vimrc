@@ -31,13 +31,9 @@ nnoremap <silent> <leader>bdm   :Sbdm<CR>
 
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufRead,BufNewFile *.as set filetype=actionscript
-au BufNewFile,BufRead *.anim,*.js,*.java,*.as,*.php let b:allowLineNumbers=1
 
-if !exists("b:allowLineNumbers")
-  set relativenumber
-else
-  set norelativenumber
-endif
+set relativenumber
+au FileType taglist setlocal norelativenumber
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
