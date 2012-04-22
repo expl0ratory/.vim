@@ -13,7 +13,7 @@ set t_Co=256
 " Powerline
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 13
 let g:Powerline_symbols='fancy'
-set fillchars+=stl:\ ,stlnc:\
+set fillchars+=stl:\ ,stlnc:\ 
 set laststatus=2
 
 " why not use semi sem instead of sem?
@@ -32,7 +32,7 @@ nnoremap <silent> <leader>bdm   :Sbdm<CR>
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufRead,BufNewFile *.as set filetype=actionscript
 
-set relativenumber
+au Filetype ruby,php,actionscript,javascript,java set relativenumber
 au FileType taglist setlocal norelativenumber
 
 " re-select visual block after indent or outdent
