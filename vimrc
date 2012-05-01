@@ -5,10 +5,31 @@ call pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Fix my most common typos
+ca WQ wq
+ca Wq wq
+ca WQa wqa
+ca Wqa wqa
+ca Q q
+ca Qa! qa!
+ca QA! qa!
+ca Q! q!
+
+" Don't pay attention to these files
+set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,.svn/*,*.jpg,*.png,*.mp3,shared/sfxha/**,shared/casino-platform/fbpoker/**
+
+" Command-T preferences
+let g:CommandTMaxHeight = 5
+let g:CommandTMinHeight = 5
+let g:CommandTCancelMap = '<C-x>'
+let g:CommandTMaxDepth = 20
+let g:CommandTMaxFiles = 20000
+
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
 set t_Co=256
+set cursorline
 
 " Powerline
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 13
@@ -68,6 +89,10 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1 
 let g:miniBufExplMapCTabSwitchBufs = 1 
 let g:miniBufExplModSelTarget = 1
+
+" syntastic
+let g:syntastic_phpcs_conf = "--config-set tab_width 2"
+
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
