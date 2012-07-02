@@ -1,5 +1,6 @@
 set encoding=utf-8
 
+" lol, git
 call pathogen#infect()
 
 syntax on
@@ -41,7 +42,7 @@ set laststatus=2
 nnoremap ; :
 
 " Use the right ctags copy
-let Tlist_Ctags_Cmd=$HOME . '/bin/ctags'
+let Tlist_Ctags_Cmd=$HOME . '/.vim/ctags/ctags'
 let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:variable'
 let Tlist_Use_Right_Window = 1
 let Tlist_Auto_Open = 1
