@@ -3,6 +3,9 @@ set encoding=utf-8
 " lol, git
 call pathogen#infect()
 
+set exrc            " enable per-directory .vimrc files
+set secure          " disable unsafe commands in local .vimrc files
+
 syntax on
 filetype plugin indent on
 
@@ -12,6 +15,7 @@ ca Wq wq
 ca WQa wqa
 ca Wqa wqa
 ca Q q
+ca Qa qa
 ca Qa! qa!
 ca QA! qa!
 ca Q! q!
@@ -54,7 +58,7 @@ nnoremap <silent> <leader>bdm   :Sbdm<CR>
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufRead,BufNewFile *.as set filetype=actionscript
 
-au Filetype ruby,php,actionscript,javascript,java set relativenumber
+au Filetype ruby,php,actionscript,javascript,java,cpp set relativenumber
 au FileType taglist setlocal norelativenumber
 
 " re-select visual block after indent or outdent
@@ -94,7 +98,6 @@ let g:miniBufExplModSelTarget = 1
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 
-
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -102,4 +105,10 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType actionscript setlocal omnifunc=actionscriptcomplete#CompleteAS
+autocmd FileType cpp setlocal omnifunc=omni#cpp#complete#Main
 
+" auto update tags file on save
+autocmd BufWritePost *
+      \ if filereadable('tags') |
+      \   call system('ctags -a '.expand('%')) |
+      \ endif
