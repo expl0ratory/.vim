@@ -33,7 +33,7 @@ hi Number          guifg=#AE81FF
 hi String          guifg=#E6DB74
 hi Conditional     guifg=#F92672               gui=bold
 hi Constant        guifg=#AE81FF               gui=bold
-hi Cursor          guifg=#000000 guibg=#F8F8F0
+hi Cursor          guifg=#000000 guibg=NONE
 hi Debug           guifg=#BCA3A3               gui=bold
 hi Define          guifg=#66D9EF
 hi Delimiter       guifg=#8F8F8F
@@ -151,7 +151,7 @@ if &t_Co > 255
    hi Folded          ctermfg=67  ctermbg=16
    hi Function        ctermfg=118
    hi Identifier      ctermfg=208
-   hi Ignore          ctermfg=244 ctermbg=232
+   hi Ignore          ctermfg=244 ctermbg=none
    hi IncSearch       ctermfg=193 ctermbg=16
 
    hi Keyword         ctermfg=161               cterm=bold
@@ -180,7 +180,7 @@ if &t_Co > 255
    hi SignColumn      ctermfg=118 ctermbg=235
    hi SpecialChar     ctermfg=161               cterm=bold
    hi SpecialComment  ctermfg=245               cterm=bold
-   hi Special         ctermfg=81  ctermbg=232
+   hi Special         ctermfg=81  ctermbg=none
    hi SpecialKey      ctermfg=245
 
    hi Statement       ctermfg=161               cterm=bold
@@ -196,16 +196,16 @@ if &t_Co > 255
    hi Type            ctermfg=81                cterm=none
    hi Underlined      ctermfg=244               cterm=underline
 
-   hi VertSplit       ctermfg=244 ctermbg=232   cterm=bold
-   hi VisualNOS                   ctermbg=238
+   hi VertSplit       ctermfg=244 ctermbg=none   cterm=bold
+   hi VisualNOS                   ctermbg=none
    hi Visual                      ctermbg=235
    hi WarningMsg      ctermfg=231 ctermbg=238   cterm=bold
    hi WildMenu        ctermfg=81  ctermbg=16
 
-   hi Normal          ctermfg=252 ctermbg=233
+   hi Normal          ctermfg=252 ctermbg=none
    hi Comment         ctermfg=59
-   hi CursorLine                  ctermbg=234   cterm=none
-   hi CursorColumn                ctermbg=234
-   hi LineNr          ctermfg=250 ctermbg=234
-   hi NonText         ctermfg=250 ctermbg=234
+   hi CursorLine                  ctermbg=234   cterm=bold
+   hi CursorColumn                ctermbg=none
+   hi LineNr          ctermfg=250 ctermbg=none
+   hi NonText         ctermfg=250 ctermbg=none
 end
