@@ -9,6 +9,9 @@ set secure          " disable unsafe commands in local .vimrc files
 syntax on
 filetype plugin indent on
 
+" use space in normal mode to toggle insertion of single character
+nmap <Space> i_<Esc>r
+
 " Fix my most common typos
 ca WQ wq
 ca Wq wq
@@ -30,6 +33,11 @@ let g:CommandTCancelMap = '<C-x>'
 let g:CommandTMaxDepth = 20
 let g:CommandTMaxFiles = 20000
 
+" misc vim environ settings
+set hlsearch
+
+let g:svndiff_autoupdate=1
+
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
@@ -37,7 +45,7 @@ set t_Co=256
 set cursorline
 
 " Powerline
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 13
+set guifont=Source\ Code\ Pro\ for\ Powerline\ 14 
 let g:Powerline_symbols='fancy'
 set fillchars+=stl:\ ,stlnc:\ 
 set laststatus=2
