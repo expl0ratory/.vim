@@ -32,6 +32,7 @@ let g:CommandTMaxFiles = 20000
 " misc vim environ settings
 set hlsearch
 
+let g:svndiff_autoupdate=1
 
 " vimdiff sexyness
 set diffopt=filler
