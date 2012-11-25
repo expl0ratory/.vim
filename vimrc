@@ -33,6 +33,9 @@ let g:CommandTCancelMap = '<C-x>'
 let g:CommandTMaxDepth = 20
 let g:CommandTMaxFiles = 20000
 
+" xcodebuild
+let g:xcodeBuildDir = '~/tmp'
+
 " misc vim environ settings
 set hlsearch
 

@@ -31,3 +31,12 @@
 [submodule "bundle/xcodebuild"]
 	path = bundle/xcodebuild
 	url = https://github.com/jerrymarino/xcodebuild.vim
+[submodule "bundle/clang"]
+	path = bundle/clang
+	url = https://github.com/Rip-Rip/clang_complete.git
+[submodule "iphonesim"]
+	path = iphonesim
+	url = https://github.com/jhaynie/iphonesim.git
+[submodule "bundle/fcsh"]
+	path = bundle/fcsh
+	url = https://github.com/MarcWeber/vim-addon-fcsh.git
