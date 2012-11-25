@@ -40,3 +40,9 @@
 [submodule "bundle/fcsh"]
 	path = bundle/fcsh
 	url = https://github.com/MarcWeber/vim-addon-fcsh.git
+[submodule "bundle/mw-utils"]
+	path = bundle/mw-utils
+	url = https://github.com/MarcWeber/vim-addon-mw-utils.git
+[submodule "bundle/actions"]
+	path = bundle/actions
+	url = https://github.com/MarcWeber/vim-addon-actions.git
