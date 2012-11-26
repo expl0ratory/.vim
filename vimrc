@@ -53,12 +53,6 @@ set laststatus=2
 " why not use semi sem instead of sem?
 nnoremap ; :
 
-" Use the right ctags copy
-let Tlist_Ctags_Cmd=$HOME . '/.vim/ctags/ctags'
-let tlist_actionscript_settings = 'actionscript;c:class;f:method;p:property;v:variable'
-let Tlist_Use_Right_Window = 1
-let Tlist_Auto_Open = 1
-
 " SmartBufferDelete remapings, don't kill special buffers
 nnoremap <silent> <leader>bd    :Sbd<CR>
 nnoremap <silent> <leader>bdm   :Sbdm<CR>
@@ -102,6 +96,7 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1 
 let g:miniBufExplMapCTabSwitchBufs = 1 
 let g:miniBufExplModSelTarget = 1
+let g:miniBufExplorerMoreThanOne=42
 
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
