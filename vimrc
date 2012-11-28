@@ -99,7 +99,7 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplMapWindowNavArrows = 1 
 let g:miniBufExplMapCTabSwitchBufs = 1 
 let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne=42
+" let g:miniBufExplorerMoreThanOne=42
 
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
