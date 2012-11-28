@@ -1,8 +1,7 @@
 #!/bin/sh
 ln -s ~/.vim/vimrc ~/.vimrc
 cd ~/.vim
-git submodule init
-git submodule update
+git submodule update --init
 cd bundle/command-t
 rake make
 cd ../../ctags
