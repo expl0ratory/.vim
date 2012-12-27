@@ -32,6 +32,11 @@ let g:CommandTMaxFiles = 20000
 
 " misc vim environ settings
 set hlsearch
+set incsearch
+map - :nohls<cr>
+set smartcase
+
+cmap w!! w !sudo tee % >/dev/null
 
 " vimdiff sexyness
 set diffopt=filler
@@ -50,7 +55,7 @@ nnoremap <silent> <leader>bd    :Sbd<CR>
 nnoremap <silent> <leader>bdm   :Sbdm<CR>
 
 au BufNewFile,BufRead *.anim set filetype=javascript
-au BufRead,BufNewFile *.as set filetype=actionscript
+au BufNewFile,BufRead *.as set filetype=actionscript
 
 au Filetype ruby,php,actionscript,javascript,java,cpp set relativenumber
 
@@ -63,8 +68,8 @@ noremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
 
-"colorscheme molokai
-colorscheme ir_black
+colorscheme molokai
+"colorscheme ir_black
 "colorscheme jdesert
 "colorscheme darkbone
 
@@ -99,3 +104,8 @@ autocmd BufWritePost *
       \ if filereadable('tags') |
       \   call system('ctags -a '.expand('%')) |
       \ endif
+
+" search up the directory tree for first tags file
+set tags=tags;/
+
+

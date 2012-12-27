@@ -29,3 +29,6 @@
 	path = bundle/clang
 	url = https://github.com/Rip-Rip/clang_complete.git
 
+[submodule "bundle/dwm"]
+	path = bundle/dwm
+	url = https://github.com/spolu/dwm.vim.git
