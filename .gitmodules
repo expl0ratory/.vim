@@ -13,9 +13,6 @@
 [submodule "fonts/ttf-dejavu-powerline"]
 	path = fonts/ttf-dejavu-powerline
 	url = git://gist.github.com/1630581.git
-[submodule "bundle/minbufexpl"]
-	path = bundle/minbufexpl
-	url = https://github.com/fholgado/minibufexpl.vim.git
 [submodule "bundle/sbd"]
 	path = bundle/sbd
 	url = https://github.com/orftz/sbd.vim.git
@@ -25,16 +22,10 @@
 [submodule "bundle/ack"]
 	path = bundle/ack
   url = https://github.com/mileszs/ack.vim.git
-[submodule "bundle/xcodebuild"]
-	path = bundle/xcodebuild
-	url = https://github.com/jerrymarino/xcodebuild.vim
 [submodule "bundle/fugitive"]
 	path = bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "bundle/clang"]
 	path = bundle/clang
 	url = https://github.com/Rip-Rip/clang_complete.git
-[submodule "iphonesim"]
-	path = iphonesim
-	url = https://github.com/jhaynie/iphonesim.git
 
