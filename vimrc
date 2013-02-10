@@ -57,7 +57,10 @@ nnoremap <silent> <leader>bdm   :Sbdm<CR>
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufNewFile,BufRead *.as set filetype=actionscript
 
-au Filetype ruby,php,actionscript,javascript,java,cpp set relativenumber
+au Filetype ruby,php,actionscript,javascript,java,cpp,python set relativenumber
+au BufNewfile,BufRead *.py set colorcolumn=80
+au BufNewfile,BufRead *.py set relativenumber 
+au BufWrite *.py call Flake8()
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
@@ -108,4 +111,4 @@ autocmd BufWritePost *
 " search up the directory tree for first tags file
 set tags=tags;/
 
-
+nnoremap <F8> :!~/.vim/ctags/ctags -R --python-kinds=-i *.py<CR>

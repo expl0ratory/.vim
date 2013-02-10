@@ -16,22 +16,12 @@
 [submodule "bundle/sbd"]
 	path = bundle/sbd
 	url = https://github.com/orftz/sbd.vim.git
-[submodule "bundle/supertab"]
-	path = bundle/supertab
-	url = https://github.com/ervandew/supertab.git
 [submodule "bundle/ack"]
 	path = bundle/ack
   url = https://github.com/mileszs/ack.vim.git
 [submodule "bundle/fugitive"]
 	path = bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "bundle/clang"]
-	path = bundle/clang
-	url = https://github.com/Rip-Rip/clang_complete.git
-
-[submodule "bundle/dwm"]
-	path = bundle/dwm
-	url = https://github.com/spolu/dwm.vim.git
 [submodule "bundle/flake8"]
 	path = bundle/flake8
 	url = https://github.com/nvie/vim-flake8.git
