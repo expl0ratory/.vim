@@ -56,11 +56,12 @@ nnoremap <silent> <leader>bdm   :Sbdm<CR>
 
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufNewFile,BufRead *.as set filetype=actionscript
+au BufNewFile,BufRead *.py set filetype=python
 
 au Filetype ruby,php,actionscript,javascript,java,cpp,python set relativenumber
-au BufNewfile,BufRead *.py set colorcolumn=80
-au BufNewfile,BufRead *.py set relativenumber 
-au BufWrite *.py call Flake8()
+au BufWritePost *.py call Flake8()
+
+let g:flake8_max_line_length=120
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
