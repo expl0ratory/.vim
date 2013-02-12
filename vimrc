@@ -21,7 +21,7 @@ ca QA! qa!
 ca Q! q!
 
 " Don't pay attention to these files
-set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,.svn/*,*.jpg,*.png,*.mp3,shared/sfxha/**,shared/casino-platform/fbpoker/**
+set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,.svn/*,*.jpg,*.png,*.mp3,*.pyc
 
 " Command-T preferences
 let g:CommandTMaxHeight = 15
@@ -106,10 +106,9 @@ autocmd FileType cpp setlocal omnifunc=omni#cpp#complete#Main
 " auto update tags file on save
 autocmd BufWritePost *
       \ if filereadable('tags') |
-      \   call system('ctags -a '.expand('%')) |
+      \   call system('~/.vim/ctags/ctags -a '.expand('%')) |
       \ endif
 
 " search up the directory tree for first tags file
 set tags=tags;/
 
-nnoremap <F8> :!~/.vim/ctags/ctags -R --python-kinds=-i *.py<CR>
