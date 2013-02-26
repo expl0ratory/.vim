@@ -7,7 +7,7 @@ syntax on
 filetype plugin indent on
 
 " use space in normal mode to toggle insertion of single character
-nmap <Space> i_<Esc>r
+" nmap <Space> i_<Esc>r
 
 " Fix my most common typos
 ca WQ wq
@@ -50,6 +50,8 @@ let g:Powerline_symbols='fancy'
 set fillchars+=stl:\ ,stlnc:\ 
 set laststatus=2
 
+let g:miniBufExplVSplit=20
+
 " SmartBufferDelete remapings, don't kill special buffers
 nnoremap <silent> <leader>bd    :Sbd<CR>
 nnoremap <silent> <leader>bdm   :Sbdm<CR>
@@ -58,11 +60,13 @@ au BufNewFile,BufRead *.anim set filetype=javascript
 au BufNewFile,BufRead *.as set filetype=actionscript
 au BufNewFile,BufRead *.py set filetype=python
 
-au Filetype ruby,php,actionscript,javascript,java,cpp,python set relativenumber
+au Filetype ruby,php,actionscript,javascript,java,cpp,python,html set relativenumber
+au Filetype html set nowrap
+au FileType html setlocal indentkeys-=*<Return>
 au BufWritePost *.py call Flake8()
 
 let g:flake8_max_line_length=120
-
+let g:syntastic_python_checker_args='--ignore=E501' 
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
@@ -112,3 +116,4 @@ autocmd BufWritePost *
 " search up the directory tree for first tags file
 set tags=tags;/
 
+set clipboard=unnamed

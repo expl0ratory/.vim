@@ -28,3 +28,9 @@
 [submodule "bundle/TagmaBufMgr"]
 	path = bundle/TagmaBufMgr
 	url = https://github.com/LStinson/TagmaBufMgr.git
+[submodule "bundle/html5syntax"]
+	path = bundle/html5syntax
+	url = git://github.com/othree/html5-syntax.vim.git
+[submodule "bundle/minbufexpl"]
+	path = bundle/minbufexpl
+	url = https://github.com/fholgado/minibufexpl.vim.git
