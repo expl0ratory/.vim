@@ -5,6 +5,7 @@ call pathogen#infect()
 
 syntax on
 filetype plugin indent on
+set nowrap
 
 " use space in normal mode to toggle insertion of single character
 " nmap <Space> i_<Esc>r
@@ -61,9 +62,8 @@ au BufNewFile,BufRead *.as set filetype=actionscript
 au BufNewFile,BufRead *.py set filetype=python
 
 au Filetype ruby,php,actionscript,javascript,java,cpp,python,html set relativenumber
-au Filetype html set nowrap
 au FileType html setlocal indentkeys-=*<Return>
-au BufWritePost *.py call Flake8()
+" au BufWritePost *.py call Flake8()
 
 let g:flake8_max_line_length=120
 let g:syntastic_python_checker_args='--ignore=E501' 
