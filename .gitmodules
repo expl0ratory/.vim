@@ -31,3 +31,6 @@
 [submodule "bundle/minbufexpl"]
 	path = bundle/minbufexpl
 	url = https://github.com/fholgado/minibufexpl.vim.git
+[submodule "bundle/ag"]
+	path = bundle/ag
+	url = https://github.com/rking/ag.vim.git
