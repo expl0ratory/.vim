@@ -7,6 +7,9 @@ syntax on
 filetype plugin indent on
 set nowrap
 
+" stop at underscores as word delimiters
+set iskeyword-=_
+
 " use space in normal mode to toggle insertion of single character
 " nmap <Space> i_<Esc>r
 
@@ -33,7 +36,6 @@ let g:CommandTMaxFiles = 20000
 
 " misc vim environ settings
 set hlsearch
-set incsearch
 map - :nohls<cr>
 set smartcase
 
