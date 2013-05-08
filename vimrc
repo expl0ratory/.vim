@@ -1,5 +1,9 @@
 set encoding=utf-8
 
+if has("gui_running")
+    set guioptions=egmrt
+endif
+
 " lol, git
 call pathogen#infect()
 
