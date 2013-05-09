@@ -51,12 +51,6 @@ set diffopt+=iwhite
 set t_Co=256
 set cursorline
 
-" Powerline
-set guifont=Source\ Code\ Pro\ for\ Powerline\ 14 
-let g:Powerline_symbols='fancy'
-set fillchars+=stl:\ ,stlnc:\ 
-set laststatus=2
-
 let g:miniBufExplVSplit=20
 
 " SmartBufferDelete remapings, don't kill special buffers
