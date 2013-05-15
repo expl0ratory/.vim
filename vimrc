@@ -13,7 +13,7 @@ set nowrap
 
 " stop at underscores as word delimiters
 set iskeyword-=_
-
+set number
 " use space in normal mode to toggle insertion of single character
 " nmap <Space> i_<Esc>r
 
@@ -61,7 +61,6 @@ au BufNewFile,BufRead *.anim set filetype=javascript
 au BufNewFile,BufRead *.as set filetype=actionscript
 au BufNewFile,BufRead *.py set filetype=python
 
-au Filetype ruby,php,actionscript,javascript,java,cpp,python,html set relativenumber
 au FileType html setlocal indentkeys-=*<Return>
 " au BufWritePost *.py call Flake8()
 
