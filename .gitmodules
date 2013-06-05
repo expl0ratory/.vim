@@ -4,12 +4,6 @@
 [submodule "bundle/syntastic"]
 	path = bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "bundle/command-t"]
-	path = bundle/command-t
-	url = git://git.wincent.com/command-t.git
-[submodule "fonts/ttf-dejavu-powerline"]
-	path = fonts/ttf-dejavu-powerline
-	url = git://gist.github.com/1630581.git
 [submodule "bundle/sbd"]
 	path = bundle/sbd
 	url = https://github.com/orftz/sbd.vim.git
@@ -19,15 +13,15 @@
 [submodule "bundle/flake8"]
 	path = bundle/flake8
 	url = https://github.com/nvie/vim-flake8.git
-[submodule "bundle/TagmaBufMgr"]
-	path = bundle/TagmaBufMgr
-	url = https://github.com/LStinson/TagmaBufMgr.git
 [submodule "bundle/html5syntax"]
 	path = bundle/html5syntax
 	url = git://github.com/othree/html5-syntax.vim.git
 [submodule "bundle/minbufexpl"]
 	path = bundle/minbufexpl
 	url = https://github.com/fholgado/minibufexpl.vim.git
-[submodule "bundle/ag"]
-	path = bundle/ag
-	url = https://github.com/rking/ag.vim.git
+[submodule "bundle/unite"]
+	path = bundle/unite
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "bundle/vimproc"]
+	path = bundle/vimproc
+	url = https://github.com/Shougo/vimproc.vim.git

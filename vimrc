@@ -2,6 +2,7 @@ set encoding=utf-8
 
 if has("gui_running")
     set guioptions=egmrt
+    set transparency=15
 endif
 
 " lol, git
@@ -74,6 +75,80 @@ vnoremap > >gv
 noremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
+
+" Unite bindings
+" replace command-t/ctrl-p
+ let g:unite_data_directory='~/.vim/.cache/unite'
+ let g:unite_enable_start_insert=1
+ let g:unite_source_history_yank_enable=1
+ let g:unite_source_file_rec_max_cache_files=5000
+ let g:unite_prompt='» '
+
+ if executable('ag')
+   let g:unite_source_grep_command='ag'
+   let g:unite_source_grep_default_opts='--nocolor --nogroup --hidden'
+   let g:unite_source_grep_recursive_opt=''
+ elseif executable('ack')
+   let g:unite_source_grep_command='ack'
+   let g:unite_source_grep_default_opts='--no-heading --no-color -a'
+   let g:unite_source_grep_recursive_opt=''
+ endif
+
+ call unite#filters#matcher_default#use(['matcher_fuzzy'])
+ call unite#filters#sorter_default#use(['sorter_rank'])
+ call unite#set_profile('files', 'smartcase', 1)
+ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ 'git5/.*/review/',
+      \ 'google/obj/',
+      \ ], '\|'))
+
+ " Map space to the prefix for Unite
+ nnoremap [unite] <Nop>
+ nmap <space> [unite]
+
+" General fuzzy search
+nnoremap <silent> [unite]<space> :<C-u>Unite
+      \ -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+
+" Quick registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+
+" Quick buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
+
+" Quick yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+
+" Quick outline
+" this is interesting
+" nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+
+" Quick sessions (projects)
+" this is interesting
+"nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+
+" Quick file search
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+
+" Quick grep from cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+
+" Quick line using the word under cursor
+nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
+
+" Quick MRU search
+nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+
+" Quick find
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+
+" Quick commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+
+" Quick bookmarks
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
 colorscheme molokai
 "colorscheme ir_black
