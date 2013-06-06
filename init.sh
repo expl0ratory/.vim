@@ -2,8 +2,8 @@
 ln -s ~/.vim/vimrc ~/.vimrc
 cd ~/.vim
 git submodule update --init
-cd bundle/command-t
-rake make
+cd bundle/vimproc
+make -f make_mac.mak
 cd ../../ctags
 ./configure
 make
