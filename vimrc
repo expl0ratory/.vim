@@ -65,8 +65,11 @@ au BufNewFile,BufRead *.py set filetype=python
 au FileType html setlocal indentkeys-=*<Return>
 " au BufWritePost *.py call Flake8()
 
-let g:flake8_max_line_length=120
-let g:syntastic_python_checker_args='--ignore=E501' 
+let g:syntastic_python_flake8_args='--ignore=E501' 
+let g:syntastic_python_flake8_args = "--max-line-length=160"
+let g:syntastic_warning_symbol="⚠"
+let g:syntastic_error_symbol="✗"
+
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
