@@ -81,23 +81,23 @@ set showmode
 
 " Unite bindings
 " replace command-t/ctrl-p
- let g:unite_data_directory='~/.vim/.cache/unite'
- let g:unite_enable_start_insert=1
- let g:unite_source_history_yank_enable=1
- let g:unite_source_file_rec_max_cache_files=5000
- let g:unite_prompt='» '
- let g:unite_source_session_enable_auto_save = 1
- 
- if executable('ag')
-   let g:unite_source_grep_command='ag'
-   let g:unite_source_grep_default_opts='--nocolor --nogroup --hidden'
-   let g:unite_source_grep_recursive_opt=''
- elseif executable('ack')
-   let g:unite_source_grep_command='ack'
-   let g:unite_source_grep_default_opts='--no-heading --no-color -a'
-   let g:unite_source_grep_recursive_opt=''
- endif
- 
+let g:unite_data_directory='~/.vim/.cache/unite'
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable=1
+let g:unite_source_file_rec_max_cache_files=5000
+let g:unite_prompt='» '
+let g:unite_source_session_enable_auto_save = 1
+
+if executable('ag')
+ let g:unite_source_grep_command='ag'
+ let g:unite_source_grep_default_opts='--nocolor --nogroup --hidden'
+ let g:unite_source_grep_recursive_opt=''
+elseif executable('ack')
+ let g:unite_source_grep_command='ack'
+ let g:unite_source_grep_default_opts='--no-heading --no-color -a'
+ let g:unite_source_grep_recursive_opt=''
+endif
+
  call unite#filters#matcher_default#use(['matcher_fuzzy'])
  call unite#filters#sorter_default#use(['sorter_rank'])
  call unite#set_profile('files', 'smartcase', 1)
@@ -108,24 +108,23 @@ set showmode
       \ 'google/obj/',
       \ ], '\|'))
 
- nnoremap <F4> :<C-u>UniteSessionSave
+nnoremap <F4> :<C-u>UniteSessionSave
 
- " Map space to the prefix for Unite
- nnoremap [unite] <Nop>
- nmap <space> [unite]
+" Map space to the prefix for Unite
+nnoremap [unite] <Nop>
+nmap <space> [unite]
 
- " General fuzzy search
- nnoremap <silent> [unite]<space> :<C-u>Unite
-       \ -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+" General fuzzy search
+nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
 
- " Quick registers
- nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+" Quick registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
- " Quick buffer and mru
- nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
+" Quick buffer and mru
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
 
- " Quick yank history
- nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+" Quick yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 
 " Quick outline
 " this is interesting
