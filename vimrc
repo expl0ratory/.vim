@@ -84,7 +84,7 @@ set showmode
 let g:unite_data_directory='~/.vim/.cache/unite'
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
-let g:unite_source_file_rec_max_cache_files=5000
+let g:unite_source_file_rec_max_cache_files=8000
 let g:unite_prompt='» '
 let g:unite_source_session_enable_auto_save = 1
 
@@ -115,7 +115,7 @@ nnoremap [unite] <Nop>
 nmap <space> [unite]
 
 " General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files buffer file_mru file_rec/async<CR>
 
 " Quick registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
