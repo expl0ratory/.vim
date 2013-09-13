@@ -3,6 +3,7 @@ set encoding=utf-8
 if has("gui_running")
     set guioptions=egmrt
     set transparency=15
+    set guifont=Literation\ Mono\ Powerline:h12
 endif
 
 " lol, git
@@ -27,14 +28,14 @@ set relativenumber
 syntax on
 filetype plugin indent on
 set nowrap
+set ttimeoutlen=50
 
 " stop at underscores as word delimiters
 set iskeyword-=_
 set number
-" use space in normal mode to toggle insertion of single character
-" nmap <Space> i_<Esc>r
 
 " Fix my most common typos
+ca W w
 ca WQ wq
 ca Wq wq
 ca WQa wqa
@@ -47,13 +48,6 @@ ca Q! q!
 
 " Don't pay attention to these files
 set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,.svn/*,*.jpg,*.png,*.mp3,*.pyc
-
-" Command-T preferences
-let g:CommandTMaxHeight = 15
-let g:CommandTMinHeight = 3 
-let g:CommandTCancelMap = '<C-x>'
-let g:CommandTMaxDepth = 20
-let g:CommandTMaxFiles = 20000
 
 " misc vim environ settings
 set hlsearch
@@ -68,18 +62,13 @@ set diffopt+=iwhite
 set t_Co=256
 set cursorline
 
-let g:miniBufExplVSplit=20
-
-" SmartBufferDelete remapings, don't kill special buffers
-nnoremap <silent> <leader>bd    :Sbd<CR>
-nnoremap <silent> <leader>bdm   :Sbdm<CR>
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 
 au BufNewFile,BufRead *.anim set filetype=javascript
 au BufNewFile,BufRead *.as set filetype=actionscript
 au BufNewFile,BufRead *.py set filetype=python
-
 au FileType html setlocal indentkeys-=*<Return>
-" au BufWritePost *.py call Flake8()
 
 let g:syntastic_python_flake8_args='--ignore=E501' 
 let g:syntastic_python_flake8_args = "--max-line-length=160"
@@ -131,16 +120,17 @@ nnoremap [unite] <Nop>
 nmap <space> [unite]
 
 " General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files buffer file_mru file_rec/async<CR>
+nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files file_rec/async<CR>
 
+nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffers<CR>
 " Quick registers
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+"nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
 " Quick buffer and mru
-nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
+"nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=buffers buffer file_mru<CR>
 
 " Quick yank history
-nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+"nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 
 " Quick outline
 " this is interesting
@@ -148,28 +138,28 @@ nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
 
 " Quick sessions (projects)
 " this is interesting
-nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
+"nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=sessions session<CR>
 
 " Quick file search
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+"nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
 
 " Quick grep from cwd
-nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+nnoremap <silent> [unite]g :<C-u>Unite -no-split -buffer-name=grep grep:.<CR>
 
 " Quick line using the word under cursor
-nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
+"nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
 
 " Quick MRU search
-nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
+"nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
 
 " Quick find
-nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
+nnoremap <silent> [unite]n :<C-u>Unite -no-split -buffer-name=find find:.<CR>
 
 " Quick commands
-nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
+"nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
 
 " Quick bookmarks
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+"nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
 colorscheme molokai
 "colorscheme ir_black
