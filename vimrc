@@ -81,17 +81,19 @@ vnoremap > >gv
 
 "Paste Toggle for stuff coming from outside vim
 noremap <F2> :set invpaste paste?<CR>
+noremap <C-l> :bprevious<CR>
+noremap <C-h> :bnext<CR>
 set pastetoggle=<F2>
 set showmode
 
 " Unite bindings
 " replace command-t/ctrl-p
-let g:unite_data_directory='~/.vim/.cache/unite'
+"let g:unite_data_directory='~/.vim/.cache/unite'
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
-let g:unite_source_file_rec_max_cache_files=8000
+"let g:unite_source_file_rec_max_cache_files=8000
 let g:unite_prompt='» '
-let g:unite_source_session_enable_auto_save = 1
+"let g:unite_source_session_enable_auto_save = 1
 
 if executable('ag')
  let g:unite_source_grep_command='ag'
@@ -108,6 +110,7 @@ endif
  call unite#set_profile('files', 'smartcase', 1)
  call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
       \ 'ignore_pattern', join([
+      \ 'venv/',
       \ '\.git/',
       \ 'git5/.*/review/',
       \ 'google/obj/',
@@ -120,9 +123,9 @@ nnoremap [unite] <Nop>
 nmap <space> [unite]
 
 " General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files file_rec/async<CR>
+nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files file_rec/async:!<CR>
 
-nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffers<CR>
+nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffer<CR>
 " Quick registers
 "nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
@@ -166,6 +169,7 @@ colorscheme molokai
 "colorscheme jdesert
 "colorscheme darkbone
 
+highlight LineNr guifg=#777777
 " tab format
 set tabstop=2
 set autoindent
