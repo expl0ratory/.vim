@@ -1,10 +1,17 @@
 set encoding=utf-8
+set t_Co=256
 
 if has("gui_running")
     set guioptions=egmrt
     set transparency=15
     set guifont=Literation\ Mono\ Powerline:h12
 endif
+
+" syntax highlighting tweaks
+let python_highlight_builtins = 1
+let python_highlight_file_headers_as_comments = 1
+let python_print_as_function = 1
+let python_highlight_string_format = 1
 
 " lol, git
 call pathogen#infect()
