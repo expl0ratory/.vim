@@ -164,7 +164,7 @@ nnoremap <silent> [unite]n :<C-u>Unite -no-split -buffer-name=find find:.<CR>
 " Quick bookmarks
 "nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
-colorscheme molokai
+colorscheme monokai-refined
 "colorscheme ir_black
 "colorscheme jdesert
 "colorscheme darkbone
