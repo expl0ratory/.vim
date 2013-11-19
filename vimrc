@@ -117,6 +117,10 @@ endif
  call unite#set_profile('files', 'smartcase', 1)
  call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
       \ 'ignore_pattern', join([
+      \ 'node_modules/',
+      \ 'bower_components/',
+      \ 'logs/',
+      \ 'build/',
       \ 'venv/',
       \ '\.git/',
       \ 'git5/.*/review/',
@@ -176,14 +180,18 @@ colorscheme monokai-refined
 "colorscheme jdesert
 "colorscheme darkbone
 
-highlight LineNr guifg=#777777
+hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
+hi SpellCap ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
+hi LineNr guifg=#777777
 " tab format
-set tabstop=2
 set autoindent
-set shiftwidth=2
+set smartindent
 set expandtab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
 set smarttab
-set softtabstop=2
 set cindent
 
 let directory=$HOME . '/.vim/tmp'
