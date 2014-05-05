@@ -77,11 +77,31 @@ au BufNewFile,BufRead *.as set filetype=actionscript
 au BufNewFile,BufRead *.py set filetype=python
 au FileType html setlocal indentkeys-=*<Return>
 
+" Custom syntastic settings:
+function s:find_jshintrc(dir)
+    let l:found = globpath(a:dir, '.jshintrc')
+    if filereadable(l:found)
+        return l:found
+    endif
+
+    let l:parent = fnamemodify(a:dir, ':h')
+    if l:parent != a:dir
+        return s:find_jshintrc(l:parent)
+    endif
+
+    return "~/.jshintrc"
+endfunction
+
+function UpdateJsHintConf()
+    let l:dir = expand('%:p:h')
+    let l:jshintrc = s:find_jshintrc(l:dir)
+    let g:syntastic_javascript_jshint_conf = l:jshintrc
+endfunction
+
 let g:syntastic_python_flake8_args='--ignore=E501' 
 let g:syntastic_python_flake8_args = "--max-line-length=160"
 let g:syntastic_warning_symbol="⚠"
 let g:syntastic_error_symbol="✗"
-
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
@@ -194,8 +214,8 @@ set tabstop=4
 set smarttab
 set cindent
 
-let directory=$HOME . '/.vim/tmp'
-let backupdir=$HOME . '/.vim/backup'
+set directory=~/.vim/tmp
+set backupdir=~/.vim/backup
 
 set hidden
 
