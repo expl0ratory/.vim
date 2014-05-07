@@ -72,9 +72,6 @@ set cursorline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
-au BufNewFile,BufRead *.anim set filetype=javascript
-au BufNewFile,BufRead *.as set filetype=actionscript
-au BufNewFile,BufRead *.py set filetype=python
 au FileType html setlocal indentkeys-=*<Return>
 
 " Custom syntastic settings:
@@ -221,23 +218,5 @@ set hidden
 
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType actionscript setlocal omnifunc=actionscriptcomplete#CompleteAS
-autocmd FileType cpp setlocal omnifunc=omni#cpp#complete#Main
-
-" auto update tags file on save
-autocmd BufWritePost *
-      \ if filereadable('tags') |
-      \   call system('~/.vim/ctags/ctags -a '.expand('%')) |
-      \ endif
-
-" search up the directory tree for first tags file
-set tags=tags;/
 
 set clipboard=unnamed
