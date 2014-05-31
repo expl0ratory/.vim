@@ -219,4 +219,6 @@ set hidden
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 
-set clipboard=unnamed
+if $TMUX == ''
+    set clipboard+=unnamed
+endif 
