@@ -201,7 +201,8 @@ colorscheme monokai-refined
 "colorscheme ir_black
 "colorscheme jdesert
 "colorscheme darkbone
-
+hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
+hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
 hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 hi SpellCap ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 hi LineNr guifg=#777777
@@ -228,3 +229,6 @@ let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 let g:evervim_devtoken = 'S=s1:U=11b26:E=14e74a32e45:C=1471cf201c0:P=1cd:A=en-devtoken:V=2:H=5a96d88687be2493ee9493de563e2283'
 
 set clipboard=unnamed
+if $TMUX == ''
+    set clipboard+=unnamed
+endif 
