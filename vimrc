@@ -196,7 +196,8 @@ colorscheme monokai-refined
 "colorscheme ir_black
 "colorscheme jdesert
 "colorscheme darkbone
-
+hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
+hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
 hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 hi SpellCap ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 hi LineNr guifg=#777777
