@@ -199,7 +199,8 @@ nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
 " Quick bookmarks
 "nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
-colorscheme monokai-refined
+"colorscheme monokai-refined
+colorscheme molokai
 "colorscheme ir_black
 "colorscheme jdesert
 "colorscheme darkbone
@@ -219,8 +220,9 @@ set tabstop=4
 set smarttab
 set cindent
 
-set directory=~/.vim/tmp
-set backupdir=~/.vim/backup
+set nobackup
+set nowritebackup
+set noswapfile
 
 set hidden
 
