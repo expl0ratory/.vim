@@ -13,6 +13,7 @@ let python_highlight_file_headers_as_comments = 1
 let python_print_as_function = 1
 let python_highlight_string_format = 1
 
+set t_ut= 
 " lol, git
 call pathogen#infect()
 
@@ -122,6 +123,7 @@ let g:unite_source_history_yank_enable=1
 let g:unite_source_file_rec_max_cache_files=16000
 let g:unite_prompt='» '
 "let g:unite_source_session_enable_auto_save = 1
+let g:unite_split_rule = "botright"
 
 if executable('ag')
  let g:unite_source_grep_command='ag'
@@ -156,7 +158,7 @@ nnoremap [unite] <Nop>
 nmap <space> [unite]
 
 " General fuzzy search
-nnoremap <silent> [unite]<space> :<C-u>Unite -no-split -buffer-name=files file_rec/async:!<CR>
+nnoremap <silent> [unite]<space> :<C-u>Unite -buffer-name=files file_rec/async:!<CR>
 
 nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffer<CR>
 " Quick registers
@@ -180,7 +182,7 @@ nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffer<CR>
 "nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
 
 " Quick grep from cwd
-nnoremap <silent> [unite]g :<C-u>Unite -no-split -buffer-name=grep grep:.<CR>
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
 
 " Quick line using the word under cursor
 nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
@@ -189,7 +191,7 @@ nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file li
 "nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
 
 " Quick find
-nnoremap <silent> [unite]n :<C-u>Unite -no-split -buffer-name=find find:.<CR>
+nnoremap <silent> [unite]n :<C-u>Unite -buffer-name=find find:.<CR>
 
 " Quick commands
 "nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=commands command<CR>
