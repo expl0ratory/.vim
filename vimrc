@@ -35,7 +35,7 @@ set relativenumber
 syntax on
 filetype plugin indent on
 set nowrap
-set ttimeoutlen=50
+set ttimeoutlen=100
 
 " stop at underscores as word delimiters
 set iskeyword-=_
@@ -70,8 +70,11 @@ set t_Co=256
 set cursorline
 
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
-
+let g:airline_inactive_collapse=1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+  
 au FileType html setlocal indentkeys-=*<Return>
 
 " Custom syntastic settings:
@@ -99,6 +102,7 @@ let g:syntastic_python_flake8_args='--ignore=E501'
 let g:syntastic_python_flake8_args = "--max-line-length=160"
 let g:syntastic_warning_symbol="⚠"
 let g:syntastic_error_symbol="✗"
+
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
@@ -115,7 +119,7 @@ set showmode
 "let g:unite_data_directory='~/.vim/.cache/unite'
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
-"let g:unite_source_file_rec_max_cache_files=8000
+let g:unite_source_file_rec_max_cache_files=16000
 let g:unite_prompt='» '
 "let g:unite_source_session_enable_auto_save = 1
 
@@ -130,12 +134,13 @@ elseif executable('ack')
 endif
 
  call unite#filters#matcher_default#use(['matcher_fuzzy'])
- call unite#filters#sorter_default#use(['sorter_rank'])
+" call unite#filters#sorter_default#use(['sorter_rank'])
  call unite#set_profile('files', 'smartcase', 1)
- call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+ call unite#custom_source('file_mru,file_rec,file_rec/async,buffer,grep',
       \ 'ignore_pattern', join([
       \ 'node_modules/',
       \ 'bower_components/',
+      \ '\.pyc',
       \ 'logs/',
       \ 'build/',
       \ 'venv/',
@@ -178,7 +183,7 @@ nnoremap <silent> [unite]b :<C-u>Unite -no-split -buffer-name=buffer buffer<CR>
 nnoremap <silent> [unite]g :<C-u>Unite -no-split -buffer-name=grep grep:.<CR>
 
 " Quick line using the word under cursor
-"nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
+nnoremap <silent> [unite]l :<C-u>UniteWithCursorWord -buffer-name=search_file line<CR>
 
 " Quick MRU search
 "nnoremap <silent> [unite]m :<C-u>Unite -buffer-name=mru file_mru<CR>
@@ -221,6 +226,10 @@ set hidden
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 
+" evernote
+let g:evervim_devtoken = 'S=s1:U=11b26:E=14e74a32e45:C=1471cf201c0:P=1cd:A=en-devtoken:V=2:H=5a96d88687be2493ee9493de563e2283'
+
+set clipboard=unnamed
 if $TMUX == ''
     set clipboard+=unnamed
 endif 
