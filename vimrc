@@ -218,8 +218,9 @@ set tabstop=4
 set smarttab
 set cindent
 
-set directory=~/.vim/tmp
-set backupdir=~/.vim/backup
+set nobackup
+set nowritebackup
+set noswapfile
 
 set hidden
 
