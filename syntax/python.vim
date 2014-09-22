@@ -75,7 +75,7 @@ syn keyword pythonConditional	elif else if
 syn keyword pythonRepeat	for while
 syn keyword pythonOperator	and in is not or
 syn keyword pythonException	except finally raise try
-syn keyword pythonInclude	from import
+syn keyword pythonInclude	from import as
 
 " NOTE: @pfdevilliers added this
 " I copied this directly from the ruby.vim syntax file inorder to highlight all
@@ -106,6 +106,12 @@ syn region pythonVars start="(" end=")" contained contains=pythonParameters tran
 syn match pythonParameters "[^,]*" contained contains=pythonParam,pythonBrackets skipwhite
 syn match pythonParam "=[^,]*" contained contains=pythonExtraOperator,pythonBuiltin,pythonConstant,pythonStatement,pythonNumber,pythonString skipwhite
 syn match pythonBrackets "[(|)]" contained skipwhite
+
+syn match pythonStrFormat "{{\|}}" contained containedin=pythonString,pythonUniString,pythonUniRawString,pythonRawString
+syn match pythonStrFormat	"{\%(\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\|\d\+\)\=\%(\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\|\[\%(\d\+\|[^!:\}]\+\)\]\)*\%(![rsa]\)\=\%(:\%({\%(\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\|\d\+\)}\|\%([^}]\=[<>=^]\)\=[ +-]\=#\=0\=\d*,\=\%(\.\d\+\)\=[bcdeEfFgGnosxX%]\=\)\=\)\=}" contained containedin=pythonString,pythonUniString,pythonUniRawString,pythonRawString
+syn match pythonStrTemplate	"\$\$" contained containedin=pythonString,pythonUniString,pythonUniRawString,pythonRawString
+syn match pythonStrTemplate	"\${[a-zA-Z_][a-zA-Z0-9_]*}" contained containedin=pythonString,pythonUniString,pythonUniRawString,pythonRawString
+syn match pythonStrTemplate	"\$[a-zA-Z_][a-zA-Z0-9_]*" contained containedin=pythonString,pythonUniString,pythonUniRawString,pythonRawString
 
 " NOTE: @pfdevilliers added this
 " The same as the previous definitions but for the python class.
@@ -312,9 +318,12 @@ if version >= 508 || !exists("did_python_syn_inits")
   HiLink pythonExtraPseudoOperator Operator
   HiLink pythonClass Normal
   HiLink pythonParameters Identifier
-  HiLink pythonParam Normal
+  HiLink pythonParam Identifier
   HiLink pythonBrackets Normal
-  HiLink pythonClassParameters InheritUnderlined
+  HiLink pythonClassParameters Function
+  HiLink pythonStrFormatting    Special
+  HiLink pythonStrFormat        Special
+  HiLink pythonStrTemplate      Special
 
   if !exists("python_no_number_highlight")
     HiLink pythonNumber		Number
