@@ -13,7 +13,8 @@ let python_highlight_file_headers_as_comments = 1
 let python_print_as_function = 1
 let python_highlight_string_format = 1
 
-set t_ut= 
+"set t_ut= 
+let g:netrw_liststyle=3
 " lol, git
 call pathogen#infect()
 
@@ -101,6 +102,9 @@ function UpdateJsHintConf()
 endfunction
 
 let g:syntastic_python_checkers = ['flake8']
+let g:matchparent_timeout = 10
+let g:matchparent_insert_timeout = 10
+
 let g:syntastic_python_flake8_args='--ignore=E501' 
 let g:syntastic_python_flake8_args = "--max-line-length=120"
 let g:syntastic_warning_symbol="⚠"
@@ -117,49 +121,43 @@ noremap <C-h> :bnext<CR>
 set pastetoggle=<F2>
 set showmode
 
-" NERDTree
-"autocmd vimenter * NERDTree
-"set autochdir
-nmap <silent> <C-D> :NERDTreeToggle<CR>
-let NERDTreeChDirMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore = ['\.pyc$']
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" Unite
 let g:unite_source_history_yank_enable = 1
-let g:unite_source_file_rec_max_cache_files = 0
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
-nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
+let g:unite_source_rec_max_cache_files = 0
+let g:unite_cursor_line_highlight = 'CursorLine'
+let g:unite_source_file_mru_filename_format = ':~:.'
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'max_candidates', 0)
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+    \ 'ignore_pattern', join([
+    \ '\.pyc$',
+    \ '\.git/',
+    \ 'scratch/',
+    \ 'www/js/libs/',
+    \ 'venv/',
+    \ 'build/',
+    \ 'node_modules/',
+    \ 'logs/',
+    \ 'bower_components/',
+    \ ], '\|'))
+let g:unite_update_time = 300
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts =
+            \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+            \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+let g:unite_source_grep_recursive_opt = ''
+try
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+catch
+endtry
+" search a file in the filetree
+nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
+nnoremap <space>s :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
+nnoremap <space>v :vsplit<cr> :<C-u>Unite -start-insert file_rec/async<cr>
+" make a grep on all files!
+nnoremap <space>/ :split<cr> :<C-u>Unite grep:.<cr>
+" see the yank history
+nnoremap <space>y :split<cr>:<C-u>Unite history/yank<cr>
 
-" Unite bindings
-" replace command-t/ctrl-p
-let g:unite_data_directory='~/.vim/.cache/unite'
-let g:unite_prompt='» '
-"let g:unite_split_rule = "botright"
-
-"call unite#custom#profile('default', 'context', {
-	"\   'start_insert': 1,
-	"\   'winheight': 10,
-	"\   'direction': 'botright',
-	"\ })
-
-call unite#custom#source('file_mru,buffer,grep',
-      \ 'ignore_pattern', join([
-      \ 'node_modules/',
-      \ 'bower_components/',
-      \ '\.pyc',
-      \ 'logs/',
-      \ 'build/',
-      \ 'venv/',
-      \ '\.git/',
-      \ 'git5/.*/review/',
-      \ 'google/obj/',
-      \ ], '\|'))
-
+"colorscheme monokai-refined
 colorscheme molokai
 
 set fillchars=vert:│
