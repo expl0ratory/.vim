@@ -1,3 +1,6 @@
+" lol, git
+call pathogen#infect()
+
 set encoding=utf-8
 set t_Co=256
 
@@ -15,9 +18,6 @@ let python_highlight_string_format = 1
 
 "set t_ut= 
 let g:netrw_liststyle=3
-" lol, git
-call pathogen#infect()
-
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
@@ -44,10 +44,9 @@ set ttimeoutlen=100
 set number
 
 " Jedi
-let g:jedi#auto_initialization = 1
-let g:jedi#call_signature_escape = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#show_call_signatures = "1"
+"let g:jedi#call_signature_escape = 0
+"let g:jedi#use_tabs_not_buffers = 0
+"let g:jedi#show_call_signatures = "1"
 
 " Fix my most common typos
 ca W w
