@@ -155,6 +155,7 @@ catch
 endtry
 " search a file in the filetree
 nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
+nnoremap <space>b :<C-u>Unite -start-insert buffer<cr>
 nnoremap <space>s :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
 nnoremap <space>v :vsplit<cr> :<C-u>Unite -start-insert file_rec/async<cr>
 " make a grep on all files!
