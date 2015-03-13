@@ -208,6 +208,8 @@ set hidden
 " syntastic
 let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 noexpandtab
+
 set clipboard=unnamed
 if $TMUX == ''
     set clipboard+=unnamed
