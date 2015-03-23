@@ -16,6 +16,8 @@ let python_highlight_file_headers_as_comments = 1
 let python_print_as_function = 1
 let python_highlight_string_format = 1
 
+let bclose_multiple = 1
+
 "set t_ut= 
 let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
