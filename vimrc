@@ -19,15 +19,13 @@ let python_highlight_string_format = 1
 let bclose_multiple = 1
 
 "set t_ut= 
-let g:netrw_liststyle=3
+"let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
 set statusline+=%h%m%r%w                     " flags
 set statusline+=[%{strlen(&ft)?&ft:'none'},\  " filetype
-set statusline+=%{strlen(&fenc)?&fenc:&enc},\  " encoding
 set statusline+=%{&fileformat}]\              " file format
-set statusline+=%{fugitive#statusline()}
 set statusline+=%=                           " right align
 set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
 "set statusline+=%b,0x%-8B\                   " current char
@@ -46,9 +44,10 @@ set ttimeoutlen=100
 set number
 
 " Jedi
-"let g:jedi#call_signature_escape = 0
-"let g:jedi#use_tabs_not_buffers = 0
-"let g:jedi#show_call_signatures = "1"
+let g:jedi#call_signature_escape = 0
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#show_call_signatures = "1"
+let g:jedi#popup_on_dot = 0
 
 " Fix my most common typos
 ca W w
@@ -78,11 +77,11 @@ set diffopt+=iwhite
 set t_Co=256
 set cursorline
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#enabled = 0
+"let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
 let g:airline_inactive_collapse=1
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_nr_show = 0
   
 au FileType html setlocal indentkeys-=*<Return>
 " au BufNewFile,BufRead *.apib set filetype=markdown
@@ -144,7 +143,7 @@ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
     \ 'node_modules/',
     \ 'logs/',
     \ 'bower_components/',
-    \ ], '\|'))
+\ ], '\|'))
 let g:unite_update_time = 300
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts =
@@ -156,10 +155,10 @@ try
 catch
 endtry
 " search a file in the filetree
-nnoremap <space><space> :<C-u>Unite -start-insert file_rec/async<cr>
-nnoremap <space>b :<C-u>Unite -start-insert buffer<cr>
-nnoremap <space>s :split<cr> :<C-u>Unite -start-insert file_rec/async<cr>
-nnoremap <space>v :vsplit<cr> :<C-u>Unite -start-insert file_rec/async<cr>
+nnoremap <space><space> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
+nnoremap <space>b :<C-u>Unite -no-split -quick-match buffer<cr>
+nnoremap <space>s :split<cr> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
+nnoremap <space>v :vsplit<cr> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
 " make a grep on all files!
 nnoremap <space>/ :split<cr> :<C-u>Unite grep:.<cr>
 " see the yank history
@@ -183,7 +182,7 @@ hi GitGutterChangeDelete guibg=#000000 ctermbg=0 ctermfg=red guifg=darkred
 "hi VertSplit       guifg=#080808 guibg=#080808 gui=bold
 "hi VertSplit       ctermfg=232 ctermbg=232   cterm=bold
 "hi NonText guifg=#272822 guibg=#272822 ctermbg=234 ctermfg=234
-hi CursorLine   guifg=#000000 ctermbg=0
+hi CursorLine   guibg=#000000 ctermbg=0
 hi CursorLineNr    guifg=#FD971F ctermbg=0
 hi LineNr guifg=#7E8E91 guibg=#000000 ctermfg=59 ctermbg=0
 
