@@ -43,15 +43,6 @@ set ttimeoutlen=100
 " set iskeyword-=_
 set number
 
-<<<<<<< HEAD
-=======
-" Jedi
-let g:jedi#call_signature_escape = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#show_call_signatures = "1"
-let g:jedi#popup_on_dot = 0
-
->>>>>>> 754a95e9cc3d71402f101100a5a35eb9a5c15a0b
 " Fix my most common typos
 ca W w
 ca WQ wq
