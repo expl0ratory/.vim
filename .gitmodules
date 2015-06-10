@@ -13,9 +13,6 @@
 [submodule "bundle/minbufexpl"]
 	path = bundle/minbufexpl
 	url = https://github.com/fholgado/minibufexpl.vim.git
-[submodule "bundle/unite"]
-	path = bundle/unite
-	url = https://github.com/Shougo/unite.vim.git
 [submodule "bundle/less"]
 	path = bundle/less
 	url = https://github.com/groenewege/vim-less.git
@@ -43,9 +40,6 @@
 [submodule "bundle/apiblueprint"]
 	path = bundle/apiblueprint
 	url = https://github.com/kylef/apiblueprint.vim.git
-[submodule "bundle/nerdtree"]
-	path = bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree
 [submodule "vimproc"]
 	path = bundle/vimproc
 	url = https://github.com/Shougo/vimproc.vim.git
