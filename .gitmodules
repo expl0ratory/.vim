@@ -12,7 +12,10 @@
 	url = git://github.com/othree/html5-syntax.vim.git
 [submodule "bundle/minbufexpl"]
 	path = bundle/minbufexpl
-	url = https://github.com/fholgado/minibufexpl.vim.git
+    url = https://github.com/fholgado/minibufexpl.vim.git
+[submodule "bundle/unite"]
+    path = bundle/unite
+    url = https://github.com/Shougo/unite.vim.git
 [submodule "bundle/less"]
 	path = bundle/less
 	url = https://github.com/groenewege/vim-less.git
