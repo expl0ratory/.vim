@@ -32,7 +32,10 @@ set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 set laststatus=2 
 
-set relativenumber
+"set relativenumbers
+set nocursorline
+set nocursorcolumn
+set synmaxcol=120
 
 syntax on
 filetype plugin indent on
@@ -69,7 +72,7 @@ cmap w!! w !sudo tee % >/dev/null
 set diffopt=filler
 set diffopt+=iwhite
 set t_Co=256
-set cursorline
+"set cursorline
 
 let g:airline#extensions#tabline#enabled = 0
 "let g:airline#extensions#tabline#show_buffers = 1
