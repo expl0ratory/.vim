@@ -172,6 +172,12 @@ hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
 hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 hi SpellCap ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
 
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#272822   ctermbg=233
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#000000 ctermbg=16
+
 hi clear SignColumn
 hi GitGutterAdd guibg=#000000 ctermbg=0 ctermfg=green guifg=darkgreen
 hi GitGutterChange guibg=#000000 ctermbg=0 ctermfg=yellow guifg=yellow
