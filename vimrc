@@ -7,7 +7,9 @@ set t_Co=256
 if has("gui_running")
     set guioptions=egmrt
     set transparency=15
-    set guifont=Literation\ Mono\ Powerline:h12
+    "set guifont=Literation\ Mono\ Powerline:h12
+    "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
+    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
 endif
 
 " syntax highlighting tweaks
@@ -35,7 +37,7 @@ set laststatus=2
 "set relativenumbers
 set nocursorline
 set nocursorcolumn
-set synmaxcol=120
+set synmaxcol=200
 
 syntax on
 filetype plugin indent on
@@ -176,8 +178,8 @@ hi GitGutterChange guibg=#000000 ctermbg=0 ctermfg=yellow guifg=yellow
 hi GitGutterDelete guibg=#000000 ctermbg=0 ctermfg=red guifg=darkred
 hi GitGutterChangeDelete guibg=#000000 ctermbg=0 ctermfg=red guifg=darkred
 
-"hi VertSplit       guifg=#080808 guibg=#080808 gui=bold
-"hi VertSplit       ctermfg=232 ctermbg=232   cterm=bold
+hi VertSplit       guifg=#080808 guibg=#080808
+hi VertSplit       ctermfg=232 ctermbg=232
 "hi NonText guifg=#272822 guibg=#272822 ctermbg=234 ctermfg=234
 hi CursorLine   guibg=#000000 ctermbg=0
 hi CursorLineNr    guifg=#FD971F ctermbg=0
