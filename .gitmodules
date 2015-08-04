@@ -52,3 +52,9 @@
 [submodule "bundle/indent-guides"]
 	path = bundle/indent-guides
 	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule "bundle/csv"]
+	path = bundle/csv
+	url = https://github.com/chrisbra/csv.vim.git
+[submodule "bundle/grepper"]
+	path = bundle/grepper
+	url = https://github.com/mhinz/vim-grepper.git

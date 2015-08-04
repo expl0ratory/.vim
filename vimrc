@@ -2,7 +2,7 @@
 call pathogen#infect()
 
 set encoding=utf-8
-set t_Co=256
+" set t_Co=256
 
 if has("gui_running")
     set guioptions=egmrt
@@ -115,6 +115,16 @@ let g:syntastic_python_flake8_args = "--max-line-length=120"
 let g:syntastic_warning_symbol="⚠"
 let g:syntastic_error_symbol="✗"
 
+" grepper neovim plugin
+let g:grepper = {}
+let g:grepper.programs = ['ag', 'git']
+
+nmap <leader>g <plug>(Grepper)
+xmap <leader>g <plug>(Grepper)
+cmap <leader>g <plug>(GrepperNext)
+nmap gs        <plug>(GrepperMotion)
+xmap gs        <plug>(GrepperMotion)
+
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
@@ -167,6 +177,7 @@ nnoremap <space>y :split<cr>:<C-u>Unite history/yank<cr>
 colorscheme molokai
 
 set fillchars=vert:│
+hi Normal          guifg=#dbdbd0 guibg=#272822
 hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
 hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
 hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
