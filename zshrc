@@ -49,10 +49,11 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git virtualenvwrapper)
 
 # User configuration
 
+export PYTHONPATH=.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -82,3 +83,12 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias nvim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
+alias vim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
+
+pgrep ssh-agent >/dev/null
+if [ $? -ne 0 ]; then
+  ssh-agent
+  ssh-add ~/.ssh/lark_id_rsa
+  ssh-add ~/.ssh/id_rsa_cratejoy
+fi
