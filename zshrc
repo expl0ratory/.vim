@@ -86,6 +86,11 @@ source $ZSH/oh-my-zsh.sh
 alias nvim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
 alias vim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
 
+# Reverse search
+
+bindkey "^R" history-incremental-search-backward
+
+# make sure ssh-agent is running and init
 pgrep ssh-agent >/dev/null
 if [ $? -ne 0 ]; then
   ssh-agent
