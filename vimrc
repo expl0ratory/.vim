@@ -9,7 +9,7 @@ if has("gui_running")
     set transparency=15
     "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
+    set guifont=Hack:h12
 endif
 
 " Term mode (neovim) settings
@@ -77,7 +77,6 @@ cmap w!! w !sudo tee % >/dev/null
 set diffopt=filler
 set diffopt+=iwhite
 set t_Co=256
-"set cursorline
 
 let g:airline#extensions#tabline#enabled = 0
 "let g:airline#extensions#tabline#show_buffers = 1
@@ -109,14 +108,8 @@ function UpdateJsHintConf()
     let g:syntastic_javascript_jshint_conf = l:jshintrc
 endfunction
 
-let g:syntastic_python_checkers = ['flake8']
-let g:matchparent_timeout = 10
-let g:matchparent_insert_timeout = 10
-
-let g:syntastic_python_flake8_args='--ignore=E501' 
-let g:syntastic_python_flake8_args = "--max-line-length=120"
-let g:syntastic_warning_symbol="⚠"
-let g:syntastic_error_symbol="✗"
+let g:neomake_warning_sign="⚠"
+let g:neomake_error_sign="✗"
 
 " grepper neovim plugin
 let g:grepper = {}
