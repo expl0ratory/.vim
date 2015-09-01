@@ -135,42 +135,9 @@ noremap <C-h> :bnext<CR>
 set pastetoggle=<F2>
 set showmode
 
-let g:unite_source_history_yank_enable = 1
-let g:unite_source_rec_max_cache_files = 0
-let g:unite_cursor_line_highlight = 'CursorLine'
-let g:unite_source_file_mru_filename_format = ':~:.'
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep', 'max_candidates', 0)
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-    \ 'ignore_pattern', join([
-    \ '\.pyc$',
-    \ '\.git/',
-    \ 'scratch/',
-    \ 'www/js/libs/',
-    \ 'venv/',
-    \ 'build/',
-    \ 'node_modules/',
-    \ 'logs/',
-    \ 'bower_components/',
-\ ], '\|'))
-let g:unite_update_time = 300
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts =
-            \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
-            \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-let g:unite_source_grep_recursive_opt = ''
-try
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-catch
-endtry
-" search a file in the filetree
-nnoremap <space><space> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
-nnoremap <space>b :<C-u>Unite -no-split -quick-match buffer<cr>
-nnoremap <space>s :split<cr> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
-nnoremap <space>v :vsplit<cr> :<C-u>Unite -no-split -start-insert file_rec/async<cr>
-" make a grep on all files!
-nnoremap <space>/ :split<cr> :<C-u>Unite grep:.<cr>
-" see the yank history
-nnoremap <space>y :split<cr>:<C-u>Unite history/yank<cr>
+" Fuzzy finder
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
 "colorscheme monokai-refined
 colorscheme molokai
