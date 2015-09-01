@@ -73,7 +73,6 @@ cmap w!! w !sudo tee % >/dev/null
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
-set t_Co=256
 "set cursorline
 
 let g:airline#extensions#tabline#enabled = 0
