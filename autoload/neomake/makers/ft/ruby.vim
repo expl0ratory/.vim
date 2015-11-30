@@ -1,7 +1,7 @@
 " vim: ts=4 sw=4 et
 
 function! neomake#makers#ft#ruby#EnabledMakers()
-    return ['mri', 'rubocop']
+    return ['mri', 'rubocop', 'reek']
 endfunction
 
 function! neomake#makers#ft#ruby#rubocop()
@@ -20,7 +20,7 @@ function! neomake#makers#ft#ruby#RubocopEntryProcess(entry)
     endif
 endfunction
 
-function neomake#makers#ft#ruby#mri()
+function! neomake#makers#ft#ruby#mri()
     let errorformat = '%-G%\m%.%#warning: %\%%(possibly %\)%\?useless use of == in void context,'
     let errorformat .= '%-G%\%.%\%.%\%.%.%#,'
     let errorformat .=
@@ -36,5 +36,12 @@ function neomake#makers#ft#ruby#mri()
         \ 'exe': 'ruby',
         \ 'args': ['-c', '-T1', '-w'],
         \ 'errorformat': errorformat
+        \ }
+endfunction
+
+function! neomake#makers#ft#ruby#reek()
+    return {
+        \ 'args': ['--format', 'text', '--single-line'],
+        \ 'errorformat': '%W%f:%l: %m',
         \ }
 endfunction
