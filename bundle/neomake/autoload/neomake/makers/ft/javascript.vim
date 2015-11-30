@@ -25,3 +25,27 @@ function! neomake#makers#ft#javascript#eslint()
         \ '%W%f: line %l\, col %c\, Warning - %m'
         \ }
 endfunction
+
+function! neomake#makers#ft#javascript#eslint_d()
+    return {
+        \ 'args': ['-f', 'compact'],
+        \ 'errorformat': '%E%f: line %l\, col %c\, Error - %m,' .
+        \ '%W%f: line %l\, col %c\, Warning - %m'
+        \ }
+endfunction
+
+function! neomake#makers#ft#javascript#standard()
+    return {
+        \ 'errorformat': '  %f:%l:%c: %m'
+        \ }
+endfunction
+
+function! neomake#makers#ft#javascript#flow()
+    " Replace "\n" by space.
+    let mapexpr = 'substitute(v:val, "\\\\n", " ", "g")'
+    return {
+        \ 'args': ['check', '--one-line'],
+        \ 'errorformat': '%f:%l:%c\,%n: %m',
+        \ 'mapexpr': mapexpr,
+        \ }
+endfunction
