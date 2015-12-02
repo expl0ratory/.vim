@@ -128,6 +128,7 @@ vnoremap > >gv
 noremap <F2> :set invpaste paste?<CR>
 noremap <C-l> :bprevious<CR>
 noremap <C-h> :bnext<CR>
+noremap <leader>d :Bdelete<CR>
 set pastetoggle=<F2>
 set showmode
 
