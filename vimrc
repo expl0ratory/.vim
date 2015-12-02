@@ -107,8 +107,8 @@ function UpdateJsHintConf()
     let g:syntastic_javascript_jshint_conf = l:jshintrc
 endfunction
 
-let g:neomake_warning_sign="⚠"
-let g:neomake_error_sign="✗"
+let g:neomake_warning_sign= {'text': "⚠", 'texthl': 'Warning'}
+let g:neomake_error_sign= {'text': "✗", 'texthl': 'Error'}
 
 " grepper neovim plugin
 let g:grepper = {}
