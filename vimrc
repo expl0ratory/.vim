@@ -12,6 +12,11 @@ if has("gui_running")
     set guifont=Meslo\ LG\ S\ for\ Powerline:h13
 endif
 
+set tags=~/Code/cratejoy/cj.tags
+
+" Term mode (neovim) settings
+tnoremap <Esc> <C-\><C-n>
+
 " syntax highlighting tweaks
 let python_highlight_builtins = 1
 let python_highlight_file_headers_as_comments = 1
