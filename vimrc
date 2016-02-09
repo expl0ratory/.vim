@@ -84,7 +84,9 @@ let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#buffer_nr_show = 0
   
 au FileType html setlocal indentkeys-=*<Return>
-" au BufNewFile,BufRead *.apib set filetype=markdown
+au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
+au FileType markdown setlocal textwidth=100
+let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff']
 
 " Custom syntastic settings:
 function s:find_jshintrc(dir)
