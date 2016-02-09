@@ -12,6 +12,8 @@ if has("gui_running")
     set guifont=Hack:h12
 endif
 
+set tags=~/Code/cratejoy/cj.tags
+
 " Term mode (neovim) settings
 tnoremap <Esc> <C-\><C-n>
 
@@ -76,7 +78,6 @@ cmap w!! w !sudo tee % >/dev/null
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
-
 let g:airline#extensions#tabline#enabled = 0
 "let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
@@ -121,6 +122,7 @@ xmap <leader>g <plug>(Grepper)
 cmap <leader>g <plug>(GrepperNext)
 nmap gs        <plug>(GrepperMotion)
 xmap gs        <plug>(GrepperMotion)
+nmap <leader>t :TagbarToggle<CR>
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
@@ -138,13 +140,11 @@ set showmode
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
+"colorscheme monokai-refined
 colorscheme molokai
-"set background=dark
-"colorscheme papercolor
-"let g:airline_theme='papercolor'
 
 set fillchars=vert:│
-hi Normal          guifg=#dbdbd0 guibg=#242228
+hi Normal          guifg=#dbdbd0 guibg=#272822
 hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
 hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
 hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
