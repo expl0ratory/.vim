@@ -128,6 +128,7 @@ xmap <leader>g <plug>(Grepper)
 cmap <leader>g <plug>(GrepperNext)
 nmap gs        <plug>(GrepperMotion)
 xmap gs        <plug>(GrepperMotion)
+nmap <leader>t :TagbarToggle<CR>
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
