@@ -1,9 +1,3 @@
 ## Vim setup
 
-this is how you do it:
-
->$ git clone git@bitbucket.org:alexmorse/.vim.git .vim
-
->$ ~/.vim/init.sh
-
-Tweak as you see fit
+Currently using neovim with ctrl-p, neomake, and some misc lil stuff
