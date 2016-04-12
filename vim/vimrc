@@ -26,7 +26,7 @@ let python_highlight_string_format = 1
 let bclose_multiple = 1
 
 "set t_ut= 
-"let g:netrw_liststyle=3
+let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
@@ -84,6 +84,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#buffer_nr_show = 0
   
+autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
 au FileType markdown setlocal textwidth=100
@@ -123,6 +124,7 @@ cmap <leader>g <plug>(GrepperNext)
 nmap gs        <plug>(GrepperMotion)
 xmap gs        <plug>(GrepperMotion)
 nmap <leader>t :TagbarToggle<CR>
+nmap <leader>f :E<cr>
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
@@ -137,8 +139,13 @@ set pastetoggle=<F2>
 set showmode
 
 " Fuzzy finder
+if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+noremap <leader>b :CtrlPBuffer<CR>
 
 "colorscheme monokai-refined
 colorscheme molokai
