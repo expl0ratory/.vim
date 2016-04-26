@@ -129,6 +129,8 @@ nmap <leader>f :E<cr>
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
+vnoremap y myy`y
+vnoremap Y myY`y
 
 "Paste Toggle for stuff coming from outside vim
 noremap <F2> :set invpaste paste?<CR>
