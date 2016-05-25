@@ -26,8 +26,12 @@ let python_highlight_string_format = 1
 let bclose_multiple = 1
 
 " Autocomplete bs
-leg g:python_host_prog = '/usr/local/bin/python'
+let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
+let g:deoplete#enable_at_startup = 1
+
+autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
+autocmd CompleteDone * pclose " Closes preview window 
 
 "set t_ut= 
 let g:netrw_liststyle=3
