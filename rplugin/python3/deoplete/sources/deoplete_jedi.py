@@ -5,7 +5,7 @@ import time
 
 sys.path.insert(1, os.path.dirname(__file__))
 
-from deoplete_jedi import cache, worker, profiler
+from deoplete_jedi import cache, worker, profiler, utils
 from deoplete.sources.base import Base
 
 
@@ -72,7 +72,7 @@ class Source(Base):
     def gather_candidates(self, context):
         if not self.workers_started:
             if self.python_path and 'VIRTUAL_ENV' not in os.environ:
-                cache.python = self.python_path
+                cache.python_path = self.python_path
             worker.start(max(1, self.worker_threads), self.description_length,
                          self.use_short_types, self.show_docstring,
                          self.debug_enabled, self.python_path)
@@ -114,7 +114,7 @@ class Source(Base):
         if cached and not cached.refresh:
             modules = cached.modules
             if all([filename in modules for filename in extra_modules]) \
-                    and all([int(os.path.getmtime(filename)) == mtime
+                    and all([utils.file_mtime(filename) == mtime
                              for filename, mtime in modules.items()]):
                 # The cache is still valid
                 refresh = False
