@@ -15,7 +15,7 @@ function! neomake#utils#LogMessage(level, msg) abort
         endif
     endif
     if type(logfile) ==# type('') && len(logfile)
-        let date = strftime("%Y-%m-%dT%H:%M:%S%z")
+        let date = strftime('%Y-%m-%dT%H:%M:%S%z')
         call writefile([date.' Log level '.a:level.': '.msg], logfile, 'a')
     endif
 endfunction
@@ -51,19 +51,19 @@ function! neomake#utils#Stringify(obj) abort
     endif
 endfunction
 
-function neomake#utils#DebugObject(msg, obj) abort
+function! neomake#utils#DebugObject(msg, obj) abort
     call neomake#utils#DebugMessage(a:msg.' '.neomake#utils#Stringify(a:obj))
 endfunction
 
 " This comes straight out of syntastic.
 "print as much of a:msg as possible without "Press Enter" prompt appearing
-function! neomake#utils#WideMessage(msg) " {{{2
+function! neomake#utils#WideMessage(msg) abort " {{{2
     let old_ruler = &ruler
     let old_showcmd = &showcmd
 
     "This is here because it is possible for some error messages to
     "begin with \n which will cause a "press enter" prompt.
-    let msg = substitute(a:msg, "\n", "", "g")
+    let msg = substitute(a:msg, "\n", '', 'g')
 
     "convert tabs to spaces so that the tabs count towards the window
     "width as the proper amount of characters
@@ -82,12 +82,12 @@ function! neomake#utils#WideMessage(msg) " {{{2
 endfunction " }}}2
 
 " This comes straight out of syntastic.
-function! neomake#utils#IsRunningWindows()
+function! neomake#utils#IsRunningWindows() abort
     return has('win32') || has('win64')
 endfunction
 
 " This comes straight out of syntastic.
-function! neomake#utils#DevNull()
+function! neomake#utils#DevNull() abort
     if neomake#utils#IsRunningWindows()
         return 'NUL'
     endif
@@ -95,15 +95,8 @@ function! neomake#utils#DevNull()
 endfunction
 
 function! neomake#utils#Exists(exe) abort
-    if neomake#utils#IsRunningWindows()
-        " TODO: Apparently XP uses a different utility to where, see
-        " https://github.com/benekastah/neomake/issues/19#issuecomment-65195452
-        let cmd = 'where'
-    else
-        let cmd = 'which'
-    endif
-    call system(cmd.' '.shellescape(a:exe))
-    return !v:shell_error
+    " DEPRECATED: just use executable() directly.
+    return executable(a:exe)
 endfunction
 
 function! neomake#utils#Random() abort
@@ -129,8 +122,10 @@ function! neomake#utils#MakerFromCommand(shell, command) abort
             \shell_name) >= 0
         let args = ['-c', command]
     else
-        " TODO Windows support (at least)
-        throw "Shell not recognized; can't build command"
+        let shell_name = split(a:shell, '\\')[-1]
+        if (shell_name ==? 'cmd.exe')
+            let args = [&shellcmdflag, command]
+        endif
     endif
     return {
         \ 'exe': a:shell,
@@ -147,7 +142,7 @@ function! neomake#utils#MakerIsAvailable(ft, maker_name) abort
     endif
     if !has_key(s:available_makers, a:maker_name)
         let maker = neomake#GetMaker(a:maker_name, a:ft)
-        let s:available_makers[a:maker_name] = neomake#utils#Exists(maker.exe)
+        let s:available_makers[a:maker_name] = executable(maker.exe)
     endif
     return s:available_makers[a:maker_name]
 endfunction

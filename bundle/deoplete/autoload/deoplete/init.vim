@@ -127,6 +127,8 @@ function! deoplete#init#_variables() abort "{{{
         \ 'g:deoplete#sources', {})
   call deoplete#util#set_default(
         \ 'g:deoplete#ignore_sources', {})
+  call deoplete#util#set_default(
+        \ 'g:deoplete#_ignore_sources', {})
 
   " Source variables
   call deoplete#util#set_default(
@@ -159,7 +161,7 @@ function! deoplete#init#_variables() abort "{{{
 
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
-        \ 'css,scss,sass', ['\w+', '\w+[):;]?\s+\w*', '[@!]'])
+        \ 'css,less,scss,sass', ['\w+', '\w+[):;]?\s+\w*', '[@!]'])
   call deoplete#util#set_pattern(
         \ g:deoplete#omni#_input_patterns,
         \ 'ruby', ['[^. \t0-9]\.\w*', '[a-zA-Z_]\w*::\w*'])
@@ -246,6 +248,15 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'keyword_patterns': keyword_patterns,
         \ 'max_abbr_width': (width * 2 / 3),
         \ 'max_menu_width': (width * 2 / 3),
+        \ 'runtimepath': &runtimepath,
+        \ 'bufnr': bufnr('%'),
+        \ 'bufname': bufname('%'),
+        \ 'cwd': getcwd(),
+        \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
+        \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete#') == 0"),
+        \ 'custom': deoplete#custom#get(),
+        \ 'omni__omnifunc': &l:omnifunc,
+        \ 'dict__dictionary': &l:dictionary,
         \ }
 endfunction"}}}
 

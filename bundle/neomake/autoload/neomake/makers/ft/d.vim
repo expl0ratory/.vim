@@ -1,65 +1,75 @@
 " vim: ts=4 sw=4 et
 
 function! neomake#makers#ft#d#EnabledMakers()
-    "dmd, ldmd, and gdmd all share a common CLI.
-    "Ordered in efficiency of compiler
-    let l:makers = []
-    if neomake#utils#Exists('dmd')
-        call add(l:makers, 'dmd')
-    elseif neomake#utils#Exists('ldmd')
-        call add(l:makers, 'ldmd')
-    elseif neomake#utils#Exists('gdmd')
-        call add(l:makers, 'gdmd')
+    " dmd, ldmd, and gdmd all share a common CLI.
+    " Ordered in efficiency of compiler
+    for m in ['dmd', 'ldmd', 'gdmd']
+        if executable(m)
+            return [m]
+        endif
+    endfor
+    return []
+endfunction
+
+function! s:findDubRoot()
+    "Look upwards for a dub.json or dub.sdl to find the root
+    "I did it like this because it's the only cross platform way I know of
+    let l:tmp_file = findfile("dub.json", ".;")
+    if empty(l:tmp_file)
+        let l:tmp_file = findfile("dub.sdl", ".;")
     endif
-    return l:makers
+    return l:tmp_file
 endfunction
 
 function! s:UpdateDub()
     "Add dub directories
-    let l:tmp_file = findfile("dub.json", ".;")
-    "dmd happily accepts an empty import string.
-    let l:dub_incs = "-I"
-    if neomake#utils#Exists('dub') && !empty(l:tmp_file)
+    let s:dubImports = []
+    let l:tmp_file = s:findDubRoot()
+    if executable('dub') && !empty(l:tmp_file)
         let l:tmp_dir = fnamemodify(l:tmp_file,':p:h')
-        "Get the dub dependencies from the dub describe command.
-        "vim doesn't seem to play nice with newlines
-        let l:dub = eval(substitute(system("dub describe --annotate --root=" . tmp_dir)
-                    \ ,'\v[\n\r]','','g'))
-        let l:tmp_arr = []
-        "Extract the packages from the dictionary
-        for l:package in l:dub.packages
-            let l:path = l:package.path
-            for l:importPath in l:package.importPaths
-                call add(tmp_arr, l:path . l:importPath)
-            endfor
-        endfor
-        let l:dub_incs .= join(tmp_arr, ":")
+        let l:dubCmd = "dub describe --data=import-paths --annotate \
+                    \--skip-registry=all --vquiet --data-list --root="
+        let l:output = system(l:dubCmd . tmp_dir)
+        if(v:shell_error == 0 && !empty(l:output))
+            " Is \n portable?
+            let s:dubImports = split(l:output, '\n')
+            call map(s:dubImports, '"-I" . v:val')
+        endif
     endif
-    return l:dub_incs
 endfunction
 
-"GDC does not adhere to dmd's flags or output, but to GCC's.
-"This is for LDC and dmd only.
-function! s:DmdStyleMaker(...)
+"GDMD does not adhere to dmd's flags or output, but to GCC's.
+"This is for LDMD and dmd only.
+function! s:DmdStyleMaker(args)
     "Updating dub paths each make might be slow?
-    let l:args = ['-c', '-o-', '-vcolumns', s:UpdateDub()] + a:000
+    call s:UpdateDub()
+    let l:args = ['-w', '-wi', '-c', '-o-', '-vcolumns'] + a:args + s:dubImports
     return {
         \ 'args': l:args,
         \ 'errorformat':
         \     '%f(%l\,%c): %trror: %m,' .
-        \     '%f(%l): %trror: %m,'
+        \     '%f(%l): %trror: %m,' .
+        \     '%f(%l\,%c): %tarning: %m,' .
+        \     '%f(%l): %tarning: %m,' .
+        \     '%f(%l\,%c): Deprecation: %m,' .
+        \     '%f(%l): Deprecation: %m,',
         \ }
 endfunction
 
 function! neomake#makers#ft#d#dmd()
+    let l:args = []
     if exists("g:neomake_d_dmd_args_conf")
-        return s:DmdStyleMaker('-conf=' . expand(g:neomake_d_dmd_args_conf))
+        call add(l:args, '-conf=' . expand(g:neomake_d_dmd_args_conf))
     endif
-    return s:DmdStyleMaker()
+    return s:DmdStyleMaker(l:args)
 endfunction
 
 function! neomake#makers#ft#d#ldmd()
-    return s:DmdStyleMaker()
+    let l:args = []
+    if exists("g:neomake_d_ldmd_args_conf")
+        call add(l:args, '-conf=' . expand(g:neomake_d_ldmd_args_conf))
+    endif
+    return s:DmdStyleMaker(l:args)
 endfunction
 
 function! neomake#makers#ft#d#gdmd()

@@ -1,11 +1,9 @@
 " vim: ts=4 sw=4 et
 
 function! neomake#makers#ft#c#EnabledMakers()
-    if neomake#utils#Exists('clang')
-        return ['clang']
-    else
-        return ['gcc']
-    end
+    let makers = executable('clang') ? ['clang', 'clangtidy'] : ['gcc']
+    call add(makers, 'checkpatch')
+    return makers
 endfunction
 
 function! neomake#makers#ft#c#clang()
@@ -37,5 +35,30 @@ function! neomake#makers#ft#c#gcc()
             \ '%f:%l: %trror: %m,' .
             \ '%f:%l: %tarning: %m,'.
             \ '%f:%l: %m',
+        \ }
+endfunction
+
+" The -p option followed by the path to the build directory should be set in
+" the maker's arguments. That directory should contain the compile command
+" database (compile_commands.json).
+function! neomake#makers#ft#c#clangtidy()
+    return {
+        \ 'exe': 'clang-tidy',
+        \ 'errorformat':
+            \ '%E%f:%l:%c: fatal error: %m,' .
+            \ '%E%f:%l:%c: error: %m,' .
+            \ '%W%f:%l:%c: warning: %m,' .
+            \ '%-G%\m%\%%(LLVM ERROR:%\|No compilation database found%\)%\@!%.%#,' .
+            \ '%E%m',
+        \ }
+endfunction
+
+function! neomake#makers#ft#c#checkpatch()
+    return {
+        \ 'exe': 'checkpatch.pl',
+        \ 'args': ['--no-summary', '--no-tree', '--terse', '--file'],
+        \ 'errorformat':
+            \ '%f:%l: %tARNING: %m,' .
+            \ '%f:%l: %tRROR: %m',
         \ }
 endfunction
