@@ -156,9 +156,7 @@ endif
 let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(node_modules|bower_components|build)$'
-  \ }
+let g:ctrlp_custom_ignore = {'dir': 'bin\|node_modules\|bower_components\|build'}
 let g:ctrlp_max_files = 0
 let g:ctrlp_max_depth = 100
 noremap <leader>b :CtrlPBuffer<CR>
