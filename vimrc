@@ -9,7 +9,7 @@ if has("gui_running")
     set transparency=15
     "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-    set guifont=Meslo\ LG\ S\ for\ Powerline:h13
+    set guifont=Hack:h12
 endif
 
 set tags=~/Code/cratejoy/cj.tags
@@ -25,8 +25,17 @@ let python_highlight_string_format = 1
 
 let bclose_multiple = 1
 
+" Autocomplete bs
+let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#jedi#show_docstring = 1
+
+autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
+autocmd CompleteDone * pclose " Closes preview window 
+
 "set t_ut= 
-"let g:netrw_liststyle=3
+let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
@@ -78,16 +87,17 @@ cmap w!! w !sudo tee % >/dev/null
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
-"set cursorline
-
 let g:airline#extensions#tabline#enabled = 0
 "let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
 let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#buffer_nr_show = 0
   
+autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
-" au BufNewFile,BufRead *.apib set filetype=markdown
+au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
+au FileType markdown setlocal textwidth=100
+let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff']
 
 " Custom syntastic settings:
 function s:find_jshintrc(dir)
@@ -110,14 +120,8 @@ function UpdateJsHintConf()
     let g:syntastic_javascript_jshint_conf = l:jshintrc
 endfunction
 
-let g:syntastic_python_checkers = ['flake8']
-let g:matchparent_timeout = 10
-let g:matchparent_insert_timeout = 10
-
-let g:syntastic_python_flake8_args='--ignore=E501' 
-let g:syntastic_python_flake8_args = "--max-line-length=120"
-let g:syntastic_warning_symbol="⚠"
-let g:syntastic_error_symbol="✗"
+let g:neomake_warning_sign= {'text': "⚠", 'texthl': 'Warning'}
+let g:neomake_error_sign= {'text': "✗", 'texthl': 'Error'}
 
 " grepper neovim plugin
 let g:grepper = {}
@@ -129,10 +133,13 @@ cmap <leader>g <plug>(GrepperNext)
 nmap gs        <plug>(GrepperMotion)
 xmap gs        <plug>(GrepperMotion)
 nmap <leader>t :TagbarToggle<CR>
+nmap <leader>f :E<cr>
 
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
+vnoremap y myy`y
+vnoremap Y myY`y
 
 "Paste Toggle for stuff coming from outside vim
 noremap <F2> :set invpaste paste?<CR>
@@ -143,9 +150,14 @@ set pastetoggle=<F2>
 set showmode
 
 " Fuzzy finder
+if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_extensions = ['cscope']
+noremap <leader>b :CtrlPBuffer<CR>
+nmap <leader>u :cscope find s <cword><CR>
 
 function! LoadCscope()
   let db = findfile("cscope.out", ".;")
@@ -157,6 +169,8 @@ function! LoadCscope()
   endif
 endfunction
 au BufEnter /* call LoadCscope()
+
+
 
 "colorscheme monokai-refined
 colorscheme molokai
