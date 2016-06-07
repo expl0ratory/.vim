@@ -1,4 +1,4 @@
-*neomake.txt*	For Vim version 7.4 and Neovim	Last change: 2014 Nov 20
+*neomake.txt*	For Vim version 7.4 and Neovim	Last change: Jan 22 2016
 
     _/      _/                                                _/               ~
    _/_/    _/    _/_/      _/_/    _/_/_/  _/_/      _/_/_/  _/  _/      _/_/  ~
@@ -47,6 +47,14 @@ fantastic vim plugins such as syntastic and dispatch.
                         the job is complete. Example:
                         :NeomakeSh find . -name '*.pyc'
 
+                                                      *neomake-:NeomakeListJobs*
+:NeomakeListJobs        List all running jobs in the format: >
+                        job_id job_name
+<
+                                                     *neomake-:NeomakeCancelJob*
+:NeomakeCancelJob *{job_id}*
+                        Sends a 'jobstop' to *job_id* which terminates the job.
+
 ==============================================================================
 3. Configuration                                         *neomake-configuration*
 
@@ -73,6 +81,11 @@ All 'args' will be |expand()|ed: >
         \ 'exe': 'lint',
         \ 'args': ['%:p'],
         \ }
+
+The 'exe' and 'args' entries can be a function (callback) or a dictionary with
+an expected entry 'fn' (which has to be a function).
+The function has to return a string, and receives no arguments.
+
 <
 Running "|:Neomake!| lint" from file.txt would cause "lint /path/to/file.txt" to
 be run.
@@ -177,12 +190,13 @@ Define a new filetype or project-level maker. See |neomake-makers|.
 
 *g:neomake_<name>_<property>* *g:neomake_<ft>_<name>_<property>*
 Configure a property for a prexisting maker where property is one of 'exe',
-'args', 'errorformat' or 'buffer_output'. Example: >
+'args', 'errorformat' or 'buffer_output'. Can also be set by buffer. Example: >
     let g:neomake_javascript_jshint_exe = './myjshint'
+    let b:neomake_javascript_jshint_exe = './myotherjshint'
 <
 *g:neomake_<ft>_enabled_makers*
 This setting will tell neomake which makers to use by default for the given
-filetype. Filetypes that have already have makers should have a default list
+filetype. Filetypes that already have makers should have a default list
 of makers already. Example: >
     let g:neomake_python_enabled_makers = ['pep8', 'pylint']
 <
@@ -258,6 +272,43 @@ section of the vim-airline |statusline|. Defaults to 1.
 This list is non-exhaustive at the moment, but you may find some of these
 functions useful.
 
+*neomake#Make* (filemode, makers[, callback])
+This function is called by |:Neomake(!)| command. It runs all the *makers*
+specified, in order. If *filemode* is 1, then the current file is used as input
+to the makers. |neomake#Make| returns an array of the job ids that it creates
+via 'jobstart'; you can potentially cancel these jobs with |neomake#CancelJob|.
+
+It also accepts a third, optional callback argument that
+is called when the command exits.  The callback is given the following
+dictionary as its sole argument: >
+    { 'status': <exit status of maker>,
+    \ 'name': <maker name>,
+    \ 'has_next': <true if another maker follows, false otherwise> }
+
+*neomake#Sh* (command[, callback])
+This function is called by the |:NeomakeSh| command. It runs the specified
+shell *command* according to 'shell'. |neomake#Sh| returns the single job id
+that it creates via 'jobstart'; you can potentially cancel this job with
+|neomake#CancelJob|.
+
+It also accepts a second, optional
+callback argument that is called when the command exits. The callback is
+given the following dictionary as its sole argument: >
+    { 'status': <exit status of command>,
+    \ 'name': 'sh: <command>',
+    \ 'has_next': false }
+
+*neomake#ListJobs*
+Invoked via |:NeomakeListJobs|. Echoes a list of running jobs in the format
+(job_id, job_name).
+
+*neomake#CancelJob*
+Invoked via |:NeomakeCancelJob|. Sends a 'jobstop' to the job id specified.
+Will trigger callback if it was specified when the job was started.
+Example: >
+    let job_id = neomake#Sh("bash -c 'while true; do sleep 1; done'")
+    call neomake#CancelJob(job_id)
+
 *neomake#signs#RedefineErrorSign* *neomake#signs#RedefineWarningSign*
 These functions define the error sign and the warning sign respectively. They
 optionally take a dictionary in the same format as |g:neomake_error_sign|. If
@@ -284,12 +335,12 @@ and the |quickfix| respectively. The return value is something like this: >
 <Where 'E', 'W' and 'x' are error types. Empty error types are ignored for
 now.
 
-*neomake#ProcessCurrentBuffer*
+*neomake#ProcessCurrentWindow*
 This is the function that takes the job output and puts it into the loclist or
-qflist, adds signs, etc. Currently, if you stay in the buffer you called
+qflist, adds signs, etc. Currently, if you stay in the window you called
 |:Neomake| from, this will happen as the job output comes in. However, if you go
-to a different buffer, neomake will wait until you return to that buffer for
-the job output to be processed. Currently, that will happen on |BufEnter| and
+to a different window, neomake will wait until you return to that window for
+the job output to be processed. Currently, that will happen on |WinEnter| and
 |CursorHold|. You can also call this function directly if you need to force
 it. This function is not currently used for |:Neomake!|, which always
 processes its output as it arrives.
