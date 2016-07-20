@@ -34,6 +34,7 @@ let g:deoplete#sources#jedi#show_docstring = 1
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 autocmd CompleteDone * pclose " Closes preview window 
 
+nnoremap <space> za
 "set t_ut= 
 let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
