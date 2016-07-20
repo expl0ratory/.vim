@@ -2,6 +2,7 @@
 export ZSH=$HOME/.files/oh-my-zsh
 export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 if [ -n "${NVIM_LISTEN_ADDRESS+x}" ]; then
+  alias o='nvr -l'
   alias h='nvr -o'
   alias v='nvr -O'
   alias t='nvr --remote-tab'

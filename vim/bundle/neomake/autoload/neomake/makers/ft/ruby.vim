@@ -1,7 +1,7 @@
 " vim: ts=4 sw=4 et
 
 function! neomake#makers#ft#ruby#EnabledMakers()
-    return ['mri', 'rubocop', 'reek']
+    return ['mri', 'rubocop', 'reek', 'rubylint']
 endfunction
 
 function! neomake#makers#ft#ruby#rubocop()
@@ -9,6 +9,14 @@ function! neomake#makers#ft#ruby#rubocop()
         \ 'args': ['--format', 'emacs'],
         \ 'errorformat': '%f:%l:%c: %t: %m',
         \ 'postprocess': function('neomake#makers#ft#ruby#RubocopEntryProcess')
+        \ }
+endfunction
+
+function! neomake#makers#ft#ruby#rubylint()
+    return {
+        \ 'exe': 'ruby-lint',
+        \ 'args': ['--presenter', 'syntastic'],
+        \ 'errorformat': '%f:%t:%l:%c: %m',
         \ }
 endfunction
 
@@ -34,6 +42,23 @@ function! neomake#makers#ft#ruby#mri()
 
     return {
         \ 'exe': 'ruby',
+        \ 'args': ['-c', '-T1', '-w'],
+        \ 'errorformat': errorformat
+        \ }
+endfunction
+
+function! neomake#makers#ft#ruby#jruby()
+    let errorformat =
+        \ '%-GSyntax OK for %f,'.
+        \ '%ESyntaxError in %f:%l: syntax error\, %m,'.
+        \ '%Z%p^,'.
+        \ '%W%f:%l: warning: %m,'.
+        \ '%Z%p^,'.
+        \ '%W%f:%l: %m,'.
+        \ '%-C%.%#'
+
+    return {
+        \ 'exe': 'jruby',
         \ 'args': ['-c', '-T1', '-w'],
         \ 'errorformat': errorformat
         \ }

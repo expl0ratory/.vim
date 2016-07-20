@@ -25,6 +25,22 @@ let python_highlight_string_format = 1
 
 let bclose_multiple = 1
 
+" Autocomplete bs
+let g:python_host_prog = '/usr/local/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#tag#cache_limit_size = 5000000
+"let g:deoplete#sources = {}
+"let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+let g:deoplete#sources#jedi#enable_cache = 1
+let g:deoplete#sources#jedi#show_docstring = 1
+
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
+autocmd CompleteDone * pclose " Closes preview window 
+
+nnoremap <space> za
 "set t_ut= 
 let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
@@ -129,6 +145,8 @@ nmap <leader>f :E<cr>
 " re-select visual block after indent or outdent
 vnoremap < <gv
 vnoremap > >gv
+vnoremap y myy`y
+vnoremap Y myY`y
 
 "Paste Toggle for stuff coming from outside vim
 noremap <F2> :set invpaste paste?<CR>
@@ -146,6 +164,20 @@ let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 noremap <leader>b :CtrlPBuffer<CR>
+nmap <leader>u :cscope find s <cword><CR>
+
+function! LoadCscope()
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  endif
+endfunction
+au BufEnter /* call LoadCscope()
+
+
 
 "colorscheme monokai-refined
 colorscheme molokai
