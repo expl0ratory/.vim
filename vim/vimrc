@@ -82,7 +82,7 @@ ca QA! qa!
 ca Q! q!
 
 " Don't pay attention to these files
-set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,.svn/*,*.jpg,*.png,*.mp3,*.pyc
+set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc
 
 " misc vim environ settings
 set hlsearch
@@ -104,7 +104,7 @@ autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
 au FileType markdown setlocal textwidth=100
-let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff']
+let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff', 'python']
 
 " Custom syntastic settings:
 function s:find_jshintrc(dir)
@@ -163,6 +163,9 @@ endif
 let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = {'dir': 'bin\|node_modules\|bower_components\|build'}
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 100
 noremap <leader>b :CtrlPBuffer<CR>
 nmap <leader>u :cscope find s <cword><CR>
 
