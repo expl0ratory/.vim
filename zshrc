@@ -88,9 +88,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias nvim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
-alias vim="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
-alias vi="NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim"
+alias vim="nvim"
+alias vi="nvim"
 
 # Reverse search
 

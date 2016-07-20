@@ -2,6 +2,7 @@
   name = Alex Morse
   user = alex@cratejoy.com
   email = alex@cratejoy.com
+  token = 7323b99b7b17261f79b59092bef9ed9c27539721
 
 [color]
   branch = auto
@@ -46,3 +47,8 @@
   latest = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'
   bdates = for-each-ref --sort=-committerdate refs/heads/ --format='%(refname) %(committerdate)'
   st = status --column
+  ls-subtrees = !"git log | grep git-subtree-dir | awk '{ print $2 }'"
+  # the acronym stands for "subtree add"
+  sba = "!f() { git subtree add --prefix $2 $1 master --squash; }; f"
+  # the acronym stands for "subtree update"
+  sbu = "!f() { git subtree pull --prefix $2 $1 master --squash; }; f"
