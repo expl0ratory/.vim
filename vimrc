@@ -29,7 +29,13 @@ let bclose_multiple = 1
 let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#tag#cache_limit_size = 5000000
+"let g:deoplete#sources = {}
+"let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+let g:deoplete#sources#jedi#enable_cache = 1
 let g:deoplete#sources#jedi#show_docstring = 1
+
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 autocmd CompleteDone * pclose " Closes preview window 
