@@ -9,7 +9,7 @@ if has("gui_running")
     set transparency=15
     "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-    set guifont=Hack:h12
+    "set guifont=Hack:h12
 endif
 
 set tags=~/Code/cratejoy/cj.tags
@@ -99,6 +99,10 @@ let g:airline#extensions#tabline#enabled = 0
 let g:airline_powerline_fonts = 1
 let g:airline_inactive_collapse=1
 let g:airline#extensions#tabline#buffer_nr_show = 0
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = " "
   
 autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
