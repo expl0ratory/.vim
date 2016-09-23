@@ -103,3 +103,4 @@ if [ $? -ne 0 ]; then
   ssh-add ~/.ssh/lark_id_rsa
   ssh-add ~/.ssh/id_rsa_cratejoy
 fi
+export PATH="/usr/local/sbin:$PATH"
