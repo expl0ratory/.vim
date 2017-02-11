@@ -1,5 +1,27 @@
 " lol, git
-call pathogen#infect()
+set nocompatible
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
+
+call dein#begin(expand('~/.vim/dein')) " plugins' root path
+call dein#add('Shougo/dein.vim')
+call dein#add('Shougo/vimproc.vim', {
+    \ 'build': {
+    \     'windows': 'tools\\update-dll-mingw',
+    \     'cygwin': 'make -f make_cygwin.mak',
+    \     'mac': 'make -f make_mac.mak',
+    \     'linux': 'make',
+    \     'unix': 'gmake',
+    \    },
+    \ })
+
+call dein#add('Shougo/denite.nvim')
+call dein#add('neomake/neomake')
+call dein#add('tpope/vim-fugitive')
+call dein#add('airblade/vim-gitgutter')
+
+" and a lot more plugins.....
+
+call dein#end()
 
 set encoding=utf-8
 " set t_Co=256
@@ -94,16 +116,7 @@ cmap w!! w !sudo tee % >/dev/null
 " vimdiff sexyness
 set diffopt=filler
 set diffopt+=iwhite
-let g:airline#extensions#tabline#enabled = 0
-"let g:airline#extensions#tabline#show_buffers = 1
-let g:airline_powerline_fonts = 1
-let g:airline_inactive_collapse=1
-let g:airline#extensions#tabline#buffer_nr_show = 0
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_symbols.space = " "
-  
+ 
 autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
@@ -164,13 +177,17 @@ set showmode
 if executable('ag')
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
-let g:ctrlp_cache_dir = $HOME . '/.vim/tmp'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = {'dir': 'bin\|node_modules\|bower_components\|build'}
-let g:ctrlp_max_files = 0
-let g:ctrlp_max_depth = 100
-noremap <leader>b :CtrlPBuffer<CR>
+
+call denite#custom#source(
+	\ 'file_mru', 'matchers', ['matcher_fuzzy'])
+call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+	      \ [ '.git/', '.ropeproject/', '__pycache__/',
+	      \   'venv/', 'build/', '*.min.*', '*.pyc',
+          \   'bower_components', 'node_modules'])
+
+nnoremap <C-p> :Denite -buffer-name=files file_rec<cr>
+nnoremap <leader>b :Denite buffer<cr>
+
 nmap <leader>u :cscope find s <cword><CR>
 
 function! LoadCscope()
