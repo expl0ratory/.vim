@@ -2,7 +2,7 @@
 set nocompatible
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
 
-call dein#begin(expand('~/.vim/dein')) " plugins' root path
+call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/vimproc.vim', {
     \ 'build': {
@@ -14,10 +14,17 @@ call dein#add('Shougo/vimproc.vim', {
     \    },
     \ })
 
+call dein#add('unblevable/quick-scope.git')
 call dein#add('Shougo/denite.nvim')
+call dein#add('chemzqm/vim-easygit')
+call dein#add('chemzqm/denite-git')
+call dein#add('Shougo/deoplete.nvim')
+call dein#add('zchee/deoplete-jedi')
 call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
 call dein#add('airblade/vim-gitgutter')
+call dein#add('davidhalter/jedi-vim')
+call dein#add('faith/vim-go')
 
 " and a lot more plugins.....
 
@@ -29,12 +36,13 @@ set encoding=utf-8
 if has("gui_running")
     set guioptions=egmrt
     set transparency=15
+    set GuiFont Hack:h9
     "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
     "set guifont=Hack:h12
 endif
 
-set tags=~/Code/cratejoy/cj.tags
+set tags=project.tags
 
 " Term mode (neovim) settings
 tnoremap <Esc> <C-\><C-n>
@@ -48,12 +56,12 @@ let python_highlight_string_format = 1
 let bclose_multiple = 1
 
 " Autocomplete bs
-let g:python_host_prog = '/usr/local/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 5000000
-"let g:deoplete#sources = {}
-"let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+let g:deoplete#sources = {}
+let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
 let g:deoplete#sources#jedi#enable_cache = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 
@@ -184,9 +192,11 @@ call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
 	      \ [ '.git/', '.ropeproject/', '__pycache__/',
 	      \   'venv/', 'build/', '*.min.*', '*.pyc',
           \   'bower_components', 'node_modules'])
+call denite#custom#option('default', 'highlight_mode_insert', 'PMenu')
 
 nnoremap <C-p> :Denite -buffer-name=files file_rec<cr>
 nnoremap <leader>b :Denite buffer<cr>
+nnoremap <leader>g :Denite grep:.<cr>
 
 nmap <leader>u :cscope find s <cword><CR>
 
@@ -259,7 +269,7 @@ let g:syntastic_phpcs_conf = "--config-set tab_width 2"
 
 autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 noexpandtab
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 if $TMUX == ''
     set clipboard+=unnamed
 endif 
