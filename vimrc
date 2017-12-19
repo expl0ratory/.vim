@@ -56,8 +56,8 @@ let python_highlight_string_format = 1
 let bclose_multiple = 1
 
 " Autocomplete bs
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '/usr/bin/python2.7'
+let g:python3_host_prog = '/usr/bin/python'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 5000000
 let g:deoplete#sources = {}
