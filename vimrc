@@ -300,3 +300,6 @@ endfunction
 for i in g:qs_enable_char_list
 	execute 'noremap <expr> <silent>' . i . " Quick_scope_selective('". i . "')"
 endfor
+
+" Set a transparent background
+hi Normal guibg=None ctermbg=None

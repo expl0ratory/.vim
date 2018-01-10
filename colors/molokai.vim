@@ -119,7 +119,7 @@ if s:molokai_original == 1
    hi CursorLineNr    guifg=#FD971F               gui=none
    hi CursorColumn                  guibg=#3E3D32
    hi ColorColumn                   guibg=#3B3A32
-   hi LineNr          guifg=#BCBCBC guibg=#3B3A32
+   hi LineNr          guifg=#BCBCBC guibg=none
    hi NonText         guifg=#75715E
    hi SpecialKey      guifg=#75715E
 else
@@ -129,7 +129,7 @@ else
    hi CursorLineNr    guifg=#FD971F               gui=none
    hi CursorColumn                  guibg=#293739
    hi ColorColumn                   guibg=#232526
-   hi LineNr          guifg=#465457 guibg=#232526
+   hi LineNr          guifg=#465457 guibg=none
    hi NonText         guifg=#465457
    hi SpecialKey      guifg=#465457
 end
@@ -230,7 +230,7 @@ if &t_Co > 255
    hi Comment         ctermfg=59
    hi CursorColumn                ctermbg=236
    hi ColorColumn                 ctermbg=236
-   hi LineNr          ctermfg=250 ctermbg=236
+   hi LineNr          ctermfg=250 ctermbg=none
    hi NonText         ctermfg=59
 
    hi SpecialKey      ctermfg=59
@@ -268,7 +268,7 @@ if &t_Co > 255
        hi Visual                      ctermbg=238
 
        hi Comment         ctermfg=244
-       hi LineNr          ctermfg=239 ctermbg=235
+       hi LineNr          ctermfg=239 ctermbg=none
        hi NonText         ctermfg=239
        hi SpecialKey      ctermfg=239
    endif
