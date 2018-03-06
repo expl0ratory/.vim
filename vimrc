@@ -62,6 +62,7 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 5000000
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+let g:deoplete#sources#jedi#server_timeout = 2
 let g:deoplete#sources#jedi#enable_cache = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 
@@ -70,7 +71,49 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 autocmd CompleteDone * pclose " Closes preview window 
 
+augroup PreviewOnBottom
+    autocmd InsertEnter * set splitbelow
+    autocmd InsertLeave * set splitbelow!
+augroup END
+
 nnoremap <space> za
+
+"close buffer without wrecking layout
+nnoremap <Leader>c :call DeleteCurBufferNotCloseWindow()<CR>
+
+func! DeleteCurBufferNotCloseWindow() abort
+    if &modified
+        echohl ErrorMsg
+        echom "E89: no write since last change"
+        echohl None
+    elseif winnr('$') == 1
+        bd
+    else  " multiple window
+        let oldbuf = bufnr('%')
+        let oldwin = winnr()
+        while 1   " all windows that display oldbuf will remain open
+            if buflisted(bufnr('#'))
+                b#
+            else
+                bn
+                let curbuf = bufnr('%')
+                if curbuf == oldbuf
+                    enew    " oldbuf is the only buffer, create one
+                endif
+            endif
+            let win = bufwinnr(oldbuf)
+            if win == -1
+                break
+            else        " there are other window that display oldbuf
+                exec win 'wincmd w'
+            endif
+        endwhile
+        " delete oldbuf and restore window to oldwin
+        exec oldbuf 'bd'
+        exec oldwin 'wincmd w'
+    endif
+endfunc
+
 "set t_ut= 
 let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
