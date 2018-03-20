@@ -1,6 +1,7 @@
 " lol, git
 set nocompatible
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
+set runtimepath+=~/.vim/dein/repos/github.com/automizu/LanguageClient-neovim
 
 call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
@@ -22,9 +23,14 @@ call dein#add('Shougo/deoplete.nvim')
 call dein#add('zchee/deoplete-jedi')
 call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
+call dein#add('gotcha/vimpdb')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('davidhalter/jedi-vim')
-call dein#add('faith/vim-go')
+call dein#add('autozimu/LanguageClient-neovim', {
+    \ 'rev': 'next',
+    \ 'build': 'bash install.sh',
+    \ })
+call dein#add('junegunn/fzf')
 
 " and a lot more plugins.....
 
@@ -54,6 +60,18 @@ let python_print_as_function = 1
 let python_highlight_string_format = 1
 
 let bclose_multiple = 1
+
+" Language Server?
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['pyls'],
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ }
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
@@ -220,7 +238,6 @@ vnoremap Y myY`y
 noremap <F2> :set invpaste paste?<CR>
 noremap <C-l> :bprevious<CR>
 noremap <C-h> :bnext<CR>
-noremap <leader>d :Bdelete<CR>
 set pastetoggle=<F2>
 set showmode
 
