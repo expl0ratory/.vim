@@ -77,9 +77,11 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 let g:python_host_prog = '/usr/bin/python2.7'
 let g:python3_host_prog = '/usr/bin/python'
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_start_length = 4
 let g:deoplete#tag#cache_limit_size = 5000000
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+
 let g:deoplete#sources#jedi#server_timeout = 2
 let g:deoplete#sources#jedi#enable_cache = 1
 let g:deoplete#sources#jedi#show_docstring = 1
