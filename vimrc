@@ -25,10 +25,20 @@ call dein#add('tpope/vim-fugitive')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('davidhalter/jedi-vim')
 call dein#add('faith/vim-go')
+call dein#add('pangloss/vim-javascript')
+call dein#add('mxw/vim-jsx')
+call dein#add('mattn/emmet-vim')
 
 " and a lot more plugins.....
 
 call dein#end()
+
+let g:user_emmet_leader_key='<Tab>'
+let g:user_emmet_settings = {
+  \  'javascript.jsx' : {
+    \      'extends' : 'jsx',
+    \  },
+  \}
 
 set encoding=utf-8
 " set t_Co=256
