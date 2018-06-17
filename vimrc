@@ -1,6 +1,7 @@
 " lol, git
 set nocompatible
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
+set runtimepath+=~/.vim/dein/repos/github.com/automizu/LanguageClient-neovim
 
 call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
@@ -22,12 +23,18 @@ call dein#add('Shougo/deoplete.nvim')
 call dein#add('zchee/deoplete-jedi')
 call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
+call dein#add('gotcha/vimpdb')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('davidhalter/jedi-vim')
 call dein#add('faith/vim-go')
 call dein#add('pangloss/vim-javascript')
 call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
+call dein#add('autozimu/LanguageClient-neovim', {
+    \ 'rev': 'next',
+    \ 'build': 'bash install.sh',
+    \ })
+call dein#add('junegunn/fzf')
 
 " and a lot more plugins.....
 
@@ -65,13 +72,28 @@ let python_highlight_string_format = 1
 
 let bclose_multiple = 1
 
+" Language Server?
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['pyls'],
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ }
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+
 " Autocomplete bs
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '/usr/bin/python2.7'
+let g:python3_host_prog = '/usr/bin/python'
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_start_length = 4
 let g:deoplete#tag#cache_limit_size = 5000000
 let g:deoplete#sources = {}
 let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
+
+let g:deoplete#sources#jedi#server_timeout = 2
 let g:deoplete#sources#jedi#enable_cache = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 
@@ -80,7 +102,49 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 autocmd CompleteDone * pclose " Closes preview window 
 
+augroup PreviewOnBottom
+    autocmd InsertEnter * set splitbelow
+    autocmd InsertLeave * set splitbelow!
+augroup END
+
 nnoremap <space> za
+
+"close buffer without wrecking layout
+nnoremap <Leader>c :call DeleteCurBufferNotCloseWindow()<CR>
+
+func! DeleteCurBufferNotCloseWindow() abort
+    if &modified
+        echohl ErrorMsg
+        echom "E89: no write since last change"
+        echohl None
+    elseif winnr('$') == 1
+        bd
+    else  " multiple window
+        let oldbuf = bufnr('%')
+        let oldwin = winnr()
+        while 1   " all windows that display oldbuf will remain open
+            if buflisted(bufnr('#'))
+                b#
+            else
+                bn
+                let curbuf = bufnr('%')
+                if curbuf == oldbuf
+                    enew    " oldbuf is the only buffer, create one
+                endif
+            endif
+            let win = bufwinnr(oldbuf)
+            if win == -1
+                break
+            else        " there are other window that display oldbuf
+                exec win 'wincmd w'
+            endif
+        endwhile
+        " delete oldbuf and restore window to oldwin
+        exec oldbuf 'bd'
+        exec oldwin 'wincmd w'
+    endif
+endfunc
+
 "set t_ut= 
 let g:netrw_liststyle=3
 set statusline=   " clear the statusline for when vimrc is reloaded
@@ -187,7 +251,6 @@ vnoremap Y myY`y
 noremap <F2> :set invpaste paste?<CR>
 noremap <C-l> :bprevious<CR>
 noremap <C-h> :bnext<CR>
-noremap <leader>d :Bdelete<CR>
 set pastetoggle=<F2>
 set showmode
 
@@ -310,3 +373,6 @@ endfunction
 for i in g:qs_enable_char_list
 	execute 'noremap <expr> <silent>' . i . " Quick_scope_selective('". i . "')"
 endfor
+
+" Set a transparent background
+hi Normal guibg=None ctermbg=None
