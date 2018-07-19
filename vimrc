@@ -26,7 +26,6 @@ call dein#add('tpope/vim-fugitive')
 call dein#add('gotcha/vimpdb')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('davidhalter/jedi-vim')
-call dein#add('faith/vim-go')
 call dein#add('pangloss/vim-javascript')
 call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
@@ -86,7 +85,7 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
-let g:python3_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 4
 let g:deoplete#tag#cache_limit_size = 5000000
@@ -346,6 +345,8 @@ set clipboard=unnamedplus
 if $TMUX == ''
     set clipboard+=unnamed
 endif 
+
+map <F7> :-1r !xclip -o -sel<CR>
 
 " custom quick scope improvements
 " Insert into your .vimrc after quick-scope is loaded.
