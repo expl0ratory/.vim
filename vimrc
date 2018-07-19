@@ -29,6 +29,7 @@ call dein#add('davidhalter/jedi-vim')
 call dein#add('pangloss/vim-javascript')
 call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
+call dein#add('gabrielelana/vim-markdown')
 call dein#add('autozimu/LanguageClient-neovim', {
     \ 'rev': 'next',
     \ 'build': 'bash install.sh',
@@ -203,6 +204,8 @@ au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
 au FileType markdown setlocal textwidth=100
 let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff', 'python']
+let g:markdown_enable_spell_checking = 0
+" let g:markdown_enable_conceal = 1
 
 " Custom syntastic settings:
 function s:find_jshintrc(dir)
