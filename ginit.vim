@@ -51,14 +51,15 @@ let g:user_emmet_settings = {
 set encoding=utf-8
 " set t_Co=256
 
-if has("gui_running")
+if exists('g:GtkGuiLoaded')
     set guioptions=egmrt
-    set transparency=15
-    set GuiFont Hack:h9
+    "set transparency=15
+    call rpcnotify(1, 'Gui', 'Font', 'Fira Code Medium 10')
     "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
     "set guifont=Hack:h12
 endif
+
 
 set tags=project.tags
 
@@ -87,7 +88,7 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = '/usr/bin/python'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 4
 let g:deoplete#tag#cache_limit_size = 5000000
@@ -208,27 +209,6 @@ let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', '
 let g:markdown_enable_spell_checking = 0
 " let g:markdown_enable_conceal = 1
 
-" Custom syntastic settings:
-function s:find_jshintrc(dir)
-    let l:found = globpath(a:dir, '.jshintrc')
-    if filereadable(l:found)
-        return l:found
-    endif
-
-    let l:parent = fnamemodify(a:dir, ':h')
-    if l:parent != a:dir
-        return s:find_jshintrc(l:parent)
-    endif
-
-    return "~/.jshintrc"
-endfunction
-
-function UpdateJsHintConf()
-    let l:dir = expand('%:p:h')
-    let l:jshintrc = s:find_jshintrc(l:dir)
-    let g:syntastic_javascript_jshint_conf = l:jshintrc
-endfunction
-
 let g:neomake_warning_sign= {'text': "⚠", 'texthl': 'Warning'}
 let g:neomake_error_sign= {'text': "✗", 'texthl': 'Error'}
 
@@ -290,9 +270,9 @@ au BufEnter /* call LoadCscope()
 
 
 "colorscheme monokai-refined
-colorscheme molokai
+colorscheme molokai_gui
 
-set fillchars=vert:│
+"set fillchars=vert:│
 hi Normal          guifg=#dbdbd0 guibg=#272822
 hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
 hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
@@ -349,8 +329,6 @@ set clipboard=unnamedplus
 if $TMUX == ''
     set clipboard+=unnamed
 endif 
-
-map <F7> :-1r !xclip -o -sel<CR>
 
 " custom quick scope improvements
 " Insert into your .vimrc after quick-scope is loaded.
