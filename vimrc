@@ -1,7 +1,7 @@
 " lol, git
 set nocompatible
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
-set runtimepath+=~/.vim/dein/repos/github.com/automizu/LanguageClient-neovim
+set runtimepath+=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
+set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-neovim
 
 call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
@@ -19,13 +19,11 @@ call dein#add('unblevable/quick-scope.git')
 call dein#add('Shougo/denite.nvim')
 call dein#add('chemzqm/vim-easygit')
 call dein#add('chemzqm/denite-git')
-call dein#add('Shougo/deoplete.nvim')
-call dein#add('zchee/deoplete-jedi')
+"call dein#add('Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'} )
+call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
 call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
-call dein#add('gotcha/vimpdb')
 call dein#add('airblade/vim-gitgutter')
-call dein#add('davidhalter/jedi-vim')
 call dein#add('pangloss/vim-javascript')
 call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
@@ -50,12 +48,14 @@ let g:user_emmet_settings = {
 
 set encoding=utf-8
 " set t_Co=256
+colorscheme molokai
 
 if has("gui_running")
     set guioptions=egmrt
     set transparency=15
-    set GuiFont Hack:h9
-    "set guifont=Literation\ Mono\ Powerline:h12
+    call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
+    colorscheme onedark
+   "set guifont=Literation\ Mono\ Powerline:h12
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
     "set guifont=Hack:h12
 endif
@@ -87,7 +87,7 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
-let g:python3_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_start_length = 4
 let g:deoplete#tag#cache_limit_size = 5000000
@@ -250,17 +250,22 @@ vnoremap > >gv
 vnoremap y myy`y
 vnoremap Y myY`y
 
-"Paste Toggle for stuff coming from outside vim
-noremap <F2> :set invpaste paste?<CR>
 noremap <C-l> :bprevious<CR>
 noremap <C-h> :bnext<CR>
-set pastetoggle=<F2>
 set showmode
 
-" Fuzzy finder
-if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
+
+" Denite stuff
+
+augroup deniteresize
+    autocmd!
+    autocmd VimResized,VimEnter * call denite#custom#option('default',
+                \'winheight', winheight(0) / 2)
+augroup end
+
+call denite#custom#option('default', {
+            \ 'prompt': '>'
+            \ })
 
 call denite#custom#source(
 	\ 'file_mru', 'matchers', ['matcher_fuzzy'])
@@ -273,24 +278,6 @@ call denite#custom#option('default', 'highlight_mode_insert', 'PMenu')
 nnoremap <C-p> :Denite -buffer-name=files file_rec<cr>
 nnoremap <leader>b :Denite buffer<cr>
 nnoremap <leader>g :Denite grep:.<cr>
-
-nmap <leader>u :cscope find s <cword><CR>
-
-function! LoadCscope()
-  let db = findfile("cscope.out", ".;")
-  if (!empty(db))
-    let path = strpart(db, 0, match(db, "/cscope.out$"))
-    set nocscopeverbose " suppress 'duplicate connection' error
-    exe "cs add " . db . " " . path
-    set cscopeverbose
-  endif
-endfunction
-au BufEnter /* call LoadCscope()
-
-
-
-"colorscheme monokai-refined
-colorscheme molokai
 
 set fillchars=vert:│
 hi Normal          guifg=#dbdbd0 guibg=#272822
