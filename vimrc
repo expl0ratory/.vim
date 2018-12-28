@@ -203,7 +203,8 @@ set diffopt+=iwhite
 autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
-au FileType markdown setlocal textwidth=100
+au FileType markdown setlocal tw=80
+au FileType markdown setlocal wrap linebreak nolist
 let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff', 'python']
 let g:markdown_enable_spell_checking = 0
 " let g:markdown_enable_conceal = 1
