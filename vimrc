@@ -19,6 +19,7 @@ call dein#add('unblevable/quick-scope.git')
 call dein#add('Shougo/denite.nvim')
 call dein#add('chemzqm/vim-easygit')
 call dein#add('chemzqm/denite-git')
+call dein#add('christoomey/vim-tmux-navigator')
 "call dein#add('Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'} )
 call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
 call dein#add('neomake/neomake')
@@ -28,10 +29,6 @@ call dein#add('pangloss/vim-javascript')
 call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
 call dein#add('gabrielelana/vim-markdown')
-call dein#add('autozimu/LanguageClient-neovim', {
-    \ 'rev': 'next',
-    \ 'build': 'bash install.sh',
-    \ })
 call dein#add('junegunn/fzf')
 call dein#add('joshdick/onedark.vim')
 
@@ -46,6 +43,7 @@ let g:user_emmet_settings = {
     \  },
   \}
 
+let mapleader = " "
 set encoding=utf-8
 " set t_Co=256
 colorscheme molokai
@@ -76,14 +74,51 @@ let bclose_multiple = 1
 " Language Server?
 set hidden
 
-let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ }
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"<Paste>
 
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+function! s:check_back_space() abort
+      let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` for navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Search in visual selection
+vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+      execute 'h '.expand('<cword>')
+        else
+            call CocAction('doHover')
+              endif
+              endfunction
 
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
@@ -203,7 +238,8 @@ set diffopt+=iwhite
 autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 au BufNewFile,BufRead,BufWrite *.md syntax match Comment /\%^---\_.\{-}---$/
-au FileType markdown setlocal textwidth=100
+au FileType markdown setlocal tw=80
+au FileType markdown setlocal wrap linebreak nolist
 let g:markdown_fenced_languages = ['javascript', 'sh', 'yaml', 'html', 'json', 'diff', 'python']
 let g:markdown_enable_spell_checking = 0
 " let g:markdown_enable_conceal = 1
@@ -250,8 +286,9 @@ vnoremap > >gv
 vnoremap y myy`y
 vnoremap Y myY`y
 
-noremap <C-l> :bprevious<CR>
-noremap <C-h> :bnext<CR>
+noremap <leader>p :bprevious<CR>
+noremap <leader>n :bnext<CR>
+inoremap kj <Esc>
 set showmode
 
 
