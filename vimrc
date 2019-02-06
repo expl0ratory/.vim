@@ -43,6 +43,7 @@ let g:user_emmet_settings = {
     \  },
   \}
 
+let mapleader = " "
 set encoding=utf-8
 " set t_Co=256
 colorscheme molokai
@@ -106,6 +107,10 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Search in visual selection
+vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
 
 function! s:show_documentation()
   if &filetype == 'vim'
