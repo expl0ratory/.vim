@@ -20,8 +20,8 @@ call dein#add('Shougo/denite.nvim')
 call dein#add('chemzqm/vim-easygit')
 call dein#add('chemzqm/denite-git')
 call dein#add('christoomey/vim-tmux-navigator')
-"call dein#add('Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'} )
 call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
+call dein#add('mrk21/yaml-vim')
 call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
 call dein#add('airblade/vim-gitgutter')
@@ -36,7 +36,7 @@ call dein#add('joshdick/onedark.vim')
 
 call dein#end()
 
-let g:user_emmet_leader_key='<Tab>'
+let g:user_emmet_leader_key='\'
 let g:user_emmet_settings = {
   \  'javascript.jsx' : {
     \      'extends' : 'jsx',
@@ -138,6 +138,9 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr>
 autocmd CompleteDone * pclose " Closes preview window 
 
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
 augroup PreviewOnBottom
     autocmd InsertEnter * set splitbelow
     autocmd InsertLeave * set splitbelow!
@@ -181,8 +184,12 @@ func! DeleteCurBufferNotCloseWindow() abort
     endif
 endfunc
 
-"set t_ut= 
-let g:netrw_liststyle=3
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
+
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
