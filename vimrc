@@ -306,7 +306,7 @@ set showmode
 nnoremap <C-p> :FZF<cr>
 
 let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
-let g:fzf_layout = { 'down': '~20%' }
+"let g:fzf_layout = { 'down': '~20%' }
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -324,6 +324,15 @@ let g:fzf_colors =
 nnoremap <leader>b :call fzf#run({'source': map(filter(range(1, bufnr('$')), 'buflisted(v:val)'),
             \               'bufname(v:val)'),
             \ 'sink': 'e', 'down': '20%'})<cr>
+let g:fzf_files_options =
+  \ '--color "border:#6699cc,info:#fabd2f" --preview "highlight -O ansi --force {} 2> /dev/null"'
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(
+  \ <q-args>,
+  \ ' --color-path 35 --color-match "1;35" --color-line-number 32',
+  \ fzf#vim#with_preview(),
+  \ <bang>0) 
+
 
 set fillchars=vert:│
 hi Normal          guifg=#dbdbd0 guibg=#272822
