@@ -16,9 +16,7 @@ call dein#add('Shougo/vimproc.vim', {
     \ })
 
 call dein#add('unblevable/quick-scope.git')
-call dein#add('Shougo/denite.nvim')
 call dein#add('chemzqm/vim-easygit')
-call dein#add('chemzqm/denite-git')
 call dein#add('christoomey/vim-tmux-navigator')
 call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
 call dein#add('mrk21/yaml-vim')
@@ -249,7 +247,7 @@ ca QA! qa!
 ca Q! q!
 
 " Don't pay attention to these files
-set wildignore+=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc
+set wildignore=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc,*/build/*,*/node_modules/*,*/bower_components/*
 
 " misc vim environ settings
 set hlsearch
@@ -319,29 +317,42 @@ inoremap kj <Esc>
 set showmode
 
 
-" Denite stuff
+"call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+"	      \ [ '.git/', '.ropeproject/', '__pycache__/',
+"	      \   'venv/', 'build/', '*.min.*', '*.pyc',
+"          \   '*/bower_components/*', '*/node_modules/*',
+"          \   '*/build/*'])
 
-augroup deniteresize
-    autocmd!
-    autocmd VimResized,VimEnter * call denite#custom#option('default',
-                \'winheight', winheight(0) / 2)
-augroup end
+nnoremap <C-p> :FZF<cr>
 
-call denite#custom#option('default', {
-            \ 'prompt': '>'
-            \ })
+let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+"let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+nnoremap <leader>b :call fzf#run({'source': map(filter(range(1, bufnr('$')), 'buflisted(v:val)'),
+            \               'bufname(v:val)'),
+            \ 'sink': 'e', 'down': '20%'})<cr>
+let g:fzf_files_options =
+  \ '--color "border:#6699cc,info:#fabd2f" --preview "highlight -O ansi --force {} 2> /dev/null"'
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(
+  \ <q-args>,
+  \ ' --color-path 35 --color-match "1;35" --color-line-number 32',
+  \ fzf#vim#with_preview(),
+  \ <bang>0) 
 
-call denite#custom#source(
-	\ 'file_mru', 'matchers', ['matcher_fuzzy'])
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-	      \ [ '.git/', '.ropeproject/', '__pycache__/',
-	      \   'venv/', 'build/', '*.min.*', '*.pyc',
-          \   'bower_components', 'node_modules'])
-call denite#custom#option('default', 'highlight_mode_insert', 'PMenu')
-
-nnoremap <C-p> :Denite -buffer-name=files file_rec<cr>
-nnoremap <leader>b :Denite buffer<cr>
-nnoremap <leader>g :Denite grep:.<cr>
 
 set fillchars=vert:│
 hi Normal          guifg=#dbdbd0 guibg=#272822
