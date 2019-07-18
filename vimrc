@@ -5,22 +5,11 @@ set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-ne
 
 call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {
-    \ 'build': {
-    \     'windows': 'tools\\update-dll-mingw',
-    \     'cygwin': 'make -f make_cygwin.mak',
-    \     'mac': 'make -f make_mac.mak',
-    \     'linux': 'make',
-    \     'unix': 'gmake',
-    \    },
-    \ })
-
 call dein#add('unblevable/quick-scope.git')
 call dein#add('chemzqm/vim-easygit')
 call dein#add('christoomey/vim-tmux-navigator')
 call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
 call dein#add('mrk21/yaml-vim')
-call dein#add('neomake/neomake')
 call dein#add('tpope/vim-fugitive')
 call dein#add('airblade/vim-gitgutter')
 call dein#add('pangloss/vim-javascript')
@@ -31,6 +20,8 @@ call dein#add('junegunn/fzf')
 call dein#add('joshdick/onedark.vim')
 
 " and a lot more plugins.....
+
+" CocInstall coc-eslint (and probably other things)
 
 call dein#end()
 
@@ -290,9 +281,6 @@ function UpdateJsHintConf()
     let g:syntastic_javascript_jshint_conf = l:jshintrc
 endfunction
 
-let g:neomake_warning_sign= {'text': "⚠", 'texthl': 'Warning'}
-let g:neomake_error_sign= {'text': "✗", 'texthl': 'Error'}
-
 " grepper neovim plugin
 let g:grepper = {}
 let g:grepper.programs = ['ag', 'git']
@@ -387,8 +375,6 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#272822   ctermbg=233
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#000000 ctermbg=16
-let g:neomake_python_enabled_makers = ['flake8']
-autocmd! BufWritePost * Neomake 
 
 hi clear SignColumn
 hi GitGutterAdd guibg=#000000 ctermbg=0 ctermfg=green guifg=darkgreen
