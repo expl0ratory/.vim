@@ -1,4 +1,4 @@
-" lol, git
+
 set nocompatible
 
 set runtimepath+=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
@@ -6,15 +6,6 @@ set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-ne
 
 call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
 call dein#add('Shougo/dein.vim')
-"call dein#add('Shougo/vimproc.vim', {
-"    \ 'build': {
-"    \     'windows': 'tools\\update-dll-mingw',
-"    \     'cygwin': 'make -f make_cygwin.mak',
-"    \     'mac': 'make -f make_mac.mak',
-"    \     'linux': 'make',
-"    \     'unix': 'gmake',
-"    \    },
-"    \ })
 call dein#add('unblevable/quick-scope.git')
 call dein#add('neoclide/vim-easygit')
 call dein#add('christoomey/vim-tmux-navigator')
@@ -28,6 +19,7 @@ call dein#add('mxw/vim-jsx')
 call dein#add('mattn/emmet-vim')
 call dein#add('gabrielelana/vim-markdown')
 call dein#add('junegunn/fzf')
+call dein#add('liuchengxu/vista.vim')
 call dein#add('joshdick/onedark.vim')
 call dein#add('bluz71/vim-nightfly-guicolors')
 
@@ -35,23 +27,22 @@ call dein#add('bluz71/vim-nightfly-guicolors')
 
 " CocInstall coc-eslint (and probably other things)
 
+:command -nargs=* Make make <args> | cwindow 3
+
 call dein#end()
 
+let mapleader = " "
+set encoding=utf-8
+set tags=project.tags
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Color settings
 set termguicolors
 
 let g:lightLine = { 'colorscheme': 'nightfly' }
 let g:nightflyCursorColor = 1
 let g:nightflyFloatingFZF = 1
 
-let g:user_emmet_leader_key='\'
-let g:user_emmet_settings = {
-  \  'javascript.jsx' : {
-    \      'extends' : 'jsx',
-    \  },
-  \}
-
-let mapleader = " "
-set encoding=utf-8
 " set t_Co=256
 "colorscheme molokai
 "if has("gui_running")
@@ -64,11 +55,15 @@ set encoding=utf-8
 "    "set guifont=Hack:h12
 "endif
 
-set tags=project.tags
+" syntax highlighting tweaks
+let python_highlight_builtins = 1
+let python_highlight_file_headers_as_comments = 1
+let python_print_as_function = 1
+let python_highlight_string_format = 1
 
 colorscheme nightfly
 
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cscope
 function! Cscope(option, query)
   let color = '{ x = $1; $1 = ""; z = $3; $3 = ""; printf "\033[34m%s\033[0m:\033[31m%s\033[0m\011\033[37m%s\033[0m\n", x,z,$0; }'
@@ -89,23 +84,19 @@ endfunction
 
 " Invoke command. 'g' is for call graph, kinda.
 nnoremap <silent> <Leader>s :call Cscope('3', expand('<cword>'))<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Term mode (neovim) settings
 tnoremap <Esc> <C-\><C-n>
 
-" syntax highlighting tweaks
-let python_highlight_builtins = 1
-let python_highlight_file_headers_as_comments = 1
-let python_print_as_function = 1
-let python_highlight_string_format = 1
-
 let bclose_multiple = 1
-
-" Language Server?
 set hidden
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Language Server - Completion (CoC) and Tagbar (Vista) stuff
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -116,6 +107,20 @@ function! s:check_back_space() abort
       let col = col('.') - 1
         return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
+
+" Vista tags stuff
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'ctags'
+
+let g:vista_executive_for = {
+  \ 'cpp': 'vim_lsp',
+  \ 'php': 'vim_lsp',
+  \ }
 
 " Use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -137,6 +142,7 @@ nmap <silent> gr <Plug>(coc-references)
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Search in visual selection
 vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
 vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
@@ -152,15 +158,6 @@ function! s:show_documentation()
 " Autocomplete bs
 let g:python_host_prog = '/usr/bin/python2.7'
 let g:python3_host_prog = '/usr/bin/python3'
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_start_length = 4
-let g:deoplete#tag#cache_limit_size = 5000000
-let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['buffer', 'tag', 'jedi']
-
-let g:deoplete#sources#jedi#server_timeout = 2
-let g:deoplete#sources#jedi#enable_cache = 1
-let g:deoplete#sources#jedi#show_docstring = 1
 
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
@@ -170,11 +167,12 @@ autocmd CompleteDone * pclose " Closes preview window
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-augroup PreviewOnBottom
-    autocmd InsertEnter * set splitbelow
-    autocmd InsertLeave * set splitbelow!
-augroup END
+"augroup PreviewOnBottom
+"    autocmd InsertEnter * set splitbelow
+"    autocmd InsertLeave * set splitbelow!
+"augroup END
 
+" Open fold under cursor
 nnoremap <space> za
 
 "close buffer without wrecking layout
@@ -213,6 +211,7 @@ func! DeleteCurBufferNotCloseWindow() abort
     endif
 endfunc
 
+" File browser settings
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -256,6 +255,16 @@ ca Qa qa
 ca Qa! qa!
 ca QA! qa!
 ca Q! q!
+
+" re-select visual block after indent or outdent
+vnoremap < <gv
+vnoremap > >gv
+vnoremap y myy`y
+vnoremap Y myY`y
+
+noremap <leader>p :bprevious<CR>
+noremap <leader>n :bnext<CR>
+inoremap kj <Esc>
 
 " Don't pay attention to these files
 set wildignore=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc,*/build/*,*/node_modules/*,*/bower_components/*
@@ -313,23 +322,7 @@ xmap gs        <plug>(GrepperMotion)
 nmap <leader>t :TagbarToggle<CR>
 nmap <leader>f :E<cr>
 
-" re-select visual block after indent or outdent
-vnoremap < <gv
-vnoremap > >gv
-vnoremap y myy`y
-vnoremap Y myY`y
-
-noremap <leader>p :bprevious<CR>
-noremap <leader>n :bnext<CR>
-inoremap kj <Esc>
 set showmode
-
-
-"call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-"	      \ [ '.git/', '.ropeproject/', '__pycache__/',
-"	      \   'venv/', 'build/', '*.min.*', '*.pyc',
-"          \   '*/bower_components/*', '*/node_modules/*',
-"          \   '*/build/*'])
 
 nnoremap <C-p> :FZF<cr>
 
@@ -384,33 +377,13 @@ function! FloatingFZF()
 endfunction
 
 set fillchars=vert:│
-"hi Normal          guifg=#dbdbd0 guibg=#272822
-"hi Pmenu ctermfg=75 ctermbg=0 guifg=#688df2 guibg=#000000
-"hi PmenuSel ctermfg=123 ctermbg=238 guifg=#5bbcd9 guibg=#454545
-"hi SpellBad ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
-"hi SpellCap ctermfg=255 ctermbg=196 guifg=#ffffff guibg=#ff0000
-
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#272822   ctermbg=233
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#000000 ctermbg=16
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake 
 
 hi clear SignColumn
-"hi GitGutterAdd guibg=#000000 ctermbg=0 ctermfg=green guifg=darkgreen
-"hi GitGutterChange guibg=#000000 ctermbg=0 ctermfg=yellow guifg=yellow
-"hi GitGutterDelete guibg=#000000 ctermbg=0 ctermfg=red guifg=darkred
-"hi GitGutterChangeDelete guibg=#000000 ctermbg=0 ctermfg=red guifg=darkred
-"
-"hi VertSplit       guifg=#080808 guibg=#080808
-"hi VertSplit       ctermfg=232 ctermbg=232
-""hi NonText guifg=#272822 guibg=#272822 ctermbg=234 ctermfg=234
-"hi CursorLine   guibg=#000000 ctermbg=0
-"hi CursorLineNr    guifg=#FD971F ctermbg=0
-"hi LineNr guifg=#7E8E91 guibg=#000000 ctermfg=59 ctermbg=0
-
 set linespace=2
 
 " tab format
@@ -469,6 +442,3 @@ endfunction
 for i in g:qs_enable_char_list
 	execute 'noremap <expr> <silent>' . i . " Quick_scope_selective('". i . "')"
 endfor
-
-" Set a transparent background
-" hi Normal guibg=None ctermbg=None
