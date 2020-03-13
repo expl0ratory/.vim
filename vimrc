@@ -1,35 +1,46 @@
 
 set nocompatible
+"set clipboard+=unnamedplus
+let g:loaded_clipboard_provider = 1
+set runtimepath+=/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim
+"set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-neovim
 
-set runtimepath+=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
-set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-neovim
+if dein#load_state('/home/alex/.cache/dein')
+  call dein#begin('/home/alex/.cache/dein')
 
-call dein#begin(expand('~/.config/nvim/dein')) " plugins' root path
-call dein#add('Shougo/dein.vim')
-call dein#add('unblevable/quick-scope.git')
-call dein#add('neoclide/vim-easygit')
-call dein#add('christoomey/vim-tmux-navigator')
-call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
-call dein#add('mrk21/yaml-vim')
-call dein#add('neomake/neomake')
-"call dein#add('tpope/vim-fugitive')
-call dein#add('airblade/vim-gitgutter')
-call dein#add('pangloss/vim-javascript')
-call dein#add('mxw/vim-jsx')
-call dein#add('mattn/emmet-vim')
-call dein#add('gabrielelana/vim-markdown')
-call dein#add('junegunn/fzf')
-call dein#add('liuchengxu/vista.vim')
-call dein#add('joshdick/onedark.vim')
-call dein#add('bluz71/vim-nightfly-guicolors')
+  " Let dein manage dein
+  " Required:
+  call dein#add('/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim')
+
+  " Add or remove your plugins here like this:
+  " Required:
+    call dein#add('unblevable/quick-scope.git')
+    call dein#add('neoclide/vim-easygit')
+    call dein#add('christoomey/vim-tmux-navigator')
+    call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
+    call dein#add('mrk21/yaml-vim')
+    call dein#add('neomake/neomake')
+    "call dein#add('tpope/vim-fugitive')
+    call dein#add('airblade/vim-gitgutter')
+    call dein#add('pangloss/vim-javascript')
+    call dein#add('mxw/vim-jsx')
+    call dein#add('mattn/emmet-vim')
+    call dein#add('gabrielelana/vim-markdown')
+    call dein#add('junegunn/fzf')
+    call dein#add('liuchengxu/vista.vim')
+    call dein#add('joshdick/onedark.vim')
+    call dein#add('bluz71/vim-nightfly-guicolors')
+
+  call dein#end()
+  call dein#save_state()
+endif
+
 
 " and a lot more plugins.....
 
 " CocInstall coc-eslint (and probably other things)
 
 :command -nargs=* Make make <args> | cwindow 3
-
-call dein#end()
 
 let mapleader = " "
 set encoding=utf-8
