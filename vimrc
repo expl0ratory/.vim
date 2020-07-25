@@ -20,7 +20,8 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('neoclide/coc.nvim', {'do': 'yarn install'})
     call dein#add('mrk21/yaml-vim')
     call dein#add('neomake/neomake')
-    "call dein#add('tpope/vim-fugitive')
+    call dein#add('mhinz/vim-grepper')
+    call dein#add('tpope/vim-fugitive')
     call dein#add('airblade/vim-gitgutter')
     call dein#add('pangloss/vim-javascript')
     call dein#add('mxw/vim-jsx')
@@ -30,6 +31,7 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('liuchengxu/vista.vim')
     call dein#add('joshdick/onedark.vim')
     call dein#add('bluz71/vim-nightfly-guicolors')
+    call dein#add('towolf/vim-helm')
 
   call dein#end()
   call dein#save_state()
@@ -48,27 +50,26 @@ set tags=project.tags
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Color settings
-set termguicolors
+ set termguicolors
 
 let g:lightLine = { 'colorscheme': 'nightfly' }
+
 let g:nightflyCursorColor = 1
 let g:nightflyFloatingFZF = 1
 
 " set t_Co=256
 "colorscheme molokai
-"if has("gui_running")
-"    set guioptions=egmrt
-"    set transparency=15
-"    call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
-"    colorscheme onedark
-"   "set guifont=Literation\ Mono\ Powerline:h12
-"    "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-"    "set guifont=Hack:h12
-"endif
+set guifont=Hack\ NF:h16
+let g:neovide_transparency=0.8
+
+if has("gui_running")
+    set guioptions=egmrt
+    set transparency=15
+    "call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
+    "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
+endif
 
 " syntax highlighting tweaks
-let python_highlight_builtins = 1
-let python_highlight_file_headers_as_comments = 1
 let python_print_as_function = 1
 let python_highlight_string_format = 1
 
@@ -132,6 +133,14 @@ let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'php': 'vim_lsp',
   \ }
+
+" Grepper
+nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
+nnoremap <leader>g :Grepper -tool ag<cr>
+
+let g:grepper = {}
+let g:grepper.tools = ['ag']
+
 
 " Use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -275,7 +284,7 @@ vnoremap Y myY`y
 
 noremap <leader>p :bprevious<CR>
 noremap <leader>n :bnext<CR>
-inoremap kj <Esc>
+inoremap jk <Esc>
 
 " Don't pay attention to these files
 set wildignore=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc,*/build/*,*/node_modules/*,*/bower_components/*
@@ -320,18 +329,6 @@ function UpdateJsHintConf()
     let l:jshintrc = s:find_jshintrc(l:dir)
     let g:syntastic_javascript_jshint_conf = l:jshintrc
 endfunction
-
-" grepper neovim plugin
-let g:grepper = {}
-let g:grepper.programs = ['ag', 'git']
-
-nmap <leader>g <plug>(Grepper)
-xmap <leader>g <plug>(Grepper)
-cmap <leader>g <plug>(GrepperNext)
-nmap gs        <plug>(GrepperMotion)
-xmap gs        <plug>(GrepperMotion)
-nmap <leader>t :TagbarToggle<CR>
-nmap <leader>f :E<cr>
 
 set showmode
 
@@ -395,6 +392,8 @@ let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake 
 
 hi clear SignColumn
+"hi Normal guibg=NONE ctermbg=NONE
+"hi NonText ctermbg=none guibg=None
 set linespace=2
 
 " tab format
@@ -424,6 +423,17 @@ set clipboard=unnamedplus
 if $TMUX == ''
     set clipboard+=unnamed
 endif 
+
+function! ClipboardYank()
+  call system('xclip -i -selection clipboard', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('xclip -o -selection clipboard')
+endfunction
+
+vnoremap <silent> y y:call ClipboardYank()<cr>
+vnoremap <silent> d d:call ClipboardYank()<cr>
+nnoremap <silent> p :call ClipboardPaste()<cr>p
 
 map <F7> :-1r !xclip -o -sel<CR>
 
