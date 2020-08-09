@@ -433,7 +433,7 @@ endfunction
 
 vnoremap <silent> y y:call ClipboardYank()<cr>
 vnoremap <silent> d d:call ClipboardYank()<cr>
-nnoremap <silent> p :call ClipboardPaste()<cr>p
+nnoremap <silent> <leader>P :call ClipboardPaste()<cr>p
 
 map <F7> :-1r !xclip -o -sel<CR>
 
