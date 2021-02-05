@@ -1,6 +1,6 @@
 
 set nocompatible
-"set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 let g:loaded_clipboard_provider = 1
 set runtimepath+=/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim
 "set runtimepath+=~/.config/nvim/dein/repos/github.com/automizu/LanguageClient-neovim
@@ -30,7 +30,6 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('junegunn/fzf')
     call dein#add('liuchengxu/vista.vim')
     call dein#add('joshdick/onedark.vim')
-    call dein#add('bluz71/vim-nightfly-guicolors')
     call dein#add('towolf/vim-helm')
 
   call dein#end()
@@ -50,12 +49,7 @@ set tags=project.tags
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Color settings
- set termguicolors
-
-let g:lightLine = { 'colorscheme': 'nightfly' }
-
-let g:nightflyCursorColor = 1
-let g:nightflyFloatingFZF = 1
+set termguicolors
 
 " set t_Co=256
 "colorscheme molokai
@@ -73,7 +67,7 @@ endif
 let python_print_as_function = 1
 let python_highlight_string_format = 1
 
-colorscheme nightfly
+colorscheme onedark
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " cscope
@@ -133,6 +127,10 @@ let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'php': 'vim_lsp',
   \ }
+
+nnoremap <leader>cl :CocDiagnostics<cr>
+nnoremap <leader>cf :CocFix<cr>
+nnoremap <leader>ch :call CocAction('doHover')<cr>
 
 " Grepper
 nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
@@ -392,8 +390,8 @@ let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake 
 
 hi clear SignColumn
-"hi Normal guibg=NONE ctermbg=NONE
-"hi NonText ctermbg=none guibg=None
+hi Normal guibg=NONE ctermbg=NONE
+hi NonText ctermbg=none guibg=None
 set linespace=2
 
 " tab format
