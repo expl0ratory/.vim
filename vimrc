@@ -11,26 +11,27 @@ if dein#load_state('/home/alex/.cache/dein')
 
   " Add or remove your plugins here like this:
   " Required:
-    call dein#add('unblevable/quick-scope.git')
+    call dein#add('jacoborus/tender.vim')
+    call dein#add('drewtempelmeyer/palenight.vim')
     call dein#add('christoomey/vim-tmux-navigator')
-    call dein#add('neoclide/coc.nvim', {'do': 'yarn install', 'merged': 0, 'rev': 'release'})
+    "call dein#add('neoclide/coc.nvim', {'do': 'yarn install', 'merged': 0, 'rev': 'release'})
+    call dein#add('neovim/nvim-lspconfig')
+    call dein#add('nvim-lua/completion-nvim')
+    call dein#add('nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'})
     call dein#add('scrooloose/nerdtree')
     call dein#add('Xuyuanp/nerdtree-git-plugin')
     call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
     call dein#add('ryanoasis/vim-devicons')
+    " audit usage
     call dein#add('preservim/nerdcommenter')
     call dein#add('mrk21/yaml-vim')
     call dein#add('mhinz/vim-grepper')
     call dein#add('tpope/vim-fugitive')
     call dein#add('airblade/vim-gitgutter')
-    call dein#add('pangloss/vim-javascript')
-    call dein#add('mxw/vim-jsx')
-    call dein#add('mattn/emmet-vim')
     call dein#add('gabrielelana/vim-markdown')
     call dein#add('junegunn/fzf')
     call dein#add('liuchengxu/vista.vim')
     call dein#add('joshdick/onedark.vim')
-    call dein#add('towolf/vim-helm')
   call dein#end()
   call dein#save_state()
 endif
@@ -195,20 +196,22 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""
 " Plugin configs
 """"""""""""""""""""""""""""""""""""""""""""
-
+" Autocomplete stuff
 " Language Server - Completion (CoC) and Tagbar (Vista) stuff
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"<Paste>
-
+set shortmess+=c
+set completeopt=menuone,noinsert,noselect
 function! s:check_back_space() abort
       let col = col('.') - 1
         return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
 
 " Vista tags stuff
+" Call :Vista, maybe bind that to a T thing?
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
@@ -219,6 +222,8 @@ let g:vista_default_executive = 'ctags'
 let g:vista_executive_for = {
   \ 'cpp': 'vim_lsp',
   \ 'php': 'vim_lsp',
+  \ 'py': 'vim_lsp',
+  \ 'python': 'vim_lsp'
   \ }
 
 let g:grepper = {}
@@ -293,7 +298,7 @@ if has("gui_running")
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 endif
 
-colorscheme onedark
+colorscheme palenight
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -312,30 +317,92 @@ nmap <leader>c <plug>NERDCommenterToggle
 " Term mode (neovim) settings
 tnoremap <Esc> <C-\><C-n>
 
-nnoremap <leader>cl :CocDiagnostics<cr>
-nnoremap <leader>cf :CocFix<cr>
-nnoremap <leader>ch :call CocAction('doHover')<cr>
-
 " Grepper
 nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
 nnoremap <leader>g :Grepper -tool ag<cr>
 
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+}
+EOF
+
+lua << EOF
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  on_attach=require'completion'.on_attach
+  require'completion'.on_attach()
+  --Enable completion triggered by <c-x><c-o>
+  --buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { "pyright", "tsserver" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+
+EOF
+
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-Space>
+"nnoremap <leader>cl :CocDiagnostics<cr>
+"nnoremap <leader>cf :CocFix<cr>
+"nnoremap <leader>ch :call CocAction('doHover')<cr>
+
 " Use <c-space> for trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[c` and `]c` for navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+"inoremap <silent><expr> <c-space> coc#refresh()
+"
+"" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+"" Coc only does snippet and additional edit on confirm.
+"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"
+"" Use `[c` and `]c` for navigate diagnostics
+"nmap <silent> [c <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]c <Plug>(coc-diagnostic-next)
+"
+"" Remap keys for gotos
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -393,3 +460,5 @@ endfunction
 for i in g:qs_enable_char_list
 	execute 'noremap <expr> <silent>' . i . " Quick_scope_selective('". i . "')"
 endfor
+
+
