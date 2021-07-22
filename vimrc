@@ -11,10 +11,12 @@ if dein#load_state('/home/alex/.cache/dein')
 
   " Add or remove your plugins here like this:
   " Required:
+    call dein#add('projekt0n/github-nvim-theme')
     call dein#add('jacoborus/tender.vim')
     call dein#add('drewtempelmeyer/palenight.vim')
     call dein#add('christoomey/vim-tmux-navigator')
-    "call dein#add('neoclide/coc.nvim', {'do': 'yarn install', 'merged': 0, 'rev': 'release'})
+    call dein#add('hoob3rt/lualine.nvim')
+    call dein#add('kyazdani42/nvim-web-devicons')
     call dein#add('neovim/nvim-lspconfig')
     call dein#add('nvim-lua/completion-nvim')
     call dein#add('nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'})
@@ -196,19 +198,6 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""
 " Plugin configs
 """"""""""""""""""""""""""""""""""""""""""""
-" Autocomplete stuff
-" Language Server - Completion (CoC) and Tagbar (Vista) stuff
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"<Paste>
-set shortmess+=c
-set completeopt=menuone,noinsert,noselect
-function! s:check_back_space() abort
-      let col = col('.') - 1
-        return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
 
 " Vista tags stuff
 " Call :Vista, maybe bind that to a T thing?
@@ -285,6 +274,18 @@ let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 
 set termguicolors
 
+lua <<EOF
+    require('github-theme').setup({
+        sidebars = {"qf", "vista", "terminal", "nerdtree", "fzf", "FZF"}
+    })
+
+    require('lualine').setup({
+        options = { 
+            theme = 'github'
+        }
+    })
+EOF
+
 " set t_Co=256
 "colorscheme molokai
 set guifont=Hack\ NF:h16
@@ -298,7 +299,7 @@ if has("gui_running")
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 endif
 
-colorscheme palenight
+colorscheme github
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -383,26 +384,6 @@ EOF
 
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
-"nnoremap <leader>cl :CocDiagnostics<cr>
-"nnoremap <leader>cf :CocFix<cr>
-"nnoremap <leader>ch :call CocAction('doHover')<cr>
-
-" Use <c-space> for trigger completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
-"
-"" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-"" Coc only does snippet and additional edit on confirm.
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"
-"" Use `[c` and `]c` for navigate diagnostics
-"nmap <silent> [c <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]c <Plug>(coc-diagnostic-next)
-"
-"" Remap keys for gotos
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
