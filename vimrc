@@ -42,8 +42,8 @@ endif
 " General vim
 """"""""""""""""""""""""""""""""""""""""""""
 set nocompatible
-set clipboard+=unnamedplus
-let g:loaded_clipboard_provider = 1
+"set clipboard+=unnamedplus
+"let g:loaded_clipboard_provider = 1
 
 set encoding=utf-8
 " Ideally, no tags ever needed again if language server can do it
@@ -190,10 +190,12 @@ set hidden
 
 autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 noexpandtab
 
-set clipboard=unnamedplus
-if $TMUX == ''
-    set clipboard+=unnamed
-endif 
+"set clipboard=unnamedplus
+"if $TMUX == ''
+"    set clipboard+=unnamed
+"endif 
+
+vnoremap <C-y> :'<,'>w !xclip -selection clipboard<Cr><Cr>
 
 """"""""""""""""""""""""""""""""""""""""""""
 " Plugin configs
