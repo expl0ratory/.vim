@@ -31,7 +31,10 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('tpope/vim-fugitive')
     call dein#add('airblade/vim-gitgutter')
     call dein#add('gabrielelana/vim-markdown')
-    call dein#add('junegunn/fzf')
+    "call dein#add('junegunn/fzf')
+    call dein#add('nvim-lua/popup.nvim')
+    call dein#add('nvim-lua/plenary.nvim')
+    call dein#add('nvim-telescope/telescope.nvim')
     call dein#add('liuchengxu/vista.vim')
     call dein#add('joshdick/onedark.vim')
   call dein#end()
@@ -220,53 +223,53 @@ let g:vista_executive_for = {
 let g:grepper = {}
 let g:grepper.tools = ['ag']
 
-let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
-let g:fzf_layout = { 'down': '~20%' }
-let g:fzf_colors =
-  \ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
-"let g:fzf_files_options =
-"  \ '--color "border:#6699cc,info:#fabd2f" --preview "highlight -O ansi --force {} 2> /dev/null"'
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(
-  \ <q-args>,
-  \ ' --color-path 35 --color-match "1;35" --color-line-number 32',
-  \ fzf#vim#with_preview(),
-  \ <bang>0) 
-
-let $FZF_DEFAULT_OPTS='--layout=reverse'
-let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-function! FloatingFZF()
-  let buf = nvim_create_buf(v:false, v:true)
-  call setbufvar(buf, '&signcolumn', 'no')
-
-  let height = &lines - 30
-  let width = float2nr(&columns - (&columns * 4 / 10))
-  let col = float2nr((&columns - width) / 2)
-
-  let opts = {
-        \ 'relative': 'editor',
-        \ 'row': 10,
-        \ 'col': col,
-        \ 'width': width,
-        \ 'height': height
-        \ }
-
-  call nvim_open_win(buf, v:true, opts)
-endfunction
+"let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+"let g:fzf_layout = { 'down': '~20%' }
+"let g:fzf_colors =
+"  \ { 'fg':      ['fg', 'Normal'],
+"  \ 'bg':      ['bg', 'Normal'],
+"  \ 'hl':      ['fg', 'Comment'],
+"  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"  \ 'hl+':     ['fg', 'Statement'],
+"  \ 'info':    ['fg', 'PreProc'],
+"  \ 'border':  ['fg', 'Ignore'],
+"  \ 'prompt':  ['fg', 'Conditional'],
+"  \ 'pointer': ['fg', 'Exception'],
+"  \ 'marker':  ['fg', 'Keyword'],
+"  \ 'spinner': ['fg', 'Label'],
+"  \ 'header':  ['fg', 'Comment'] }
+"
+""let g:fzf_files_options =
+""  \ '--color "border:#6699cc,info:#fabd2f" --preview "highlight -O ansi --force {} 2> /dev/null"'
+"command! -bang -nargs=* Ag
+"  \ call fzf#vim#ag(
+"  \ <q-args>,
+"  \ ' --color-path 35 --color-match "1;35" --color-line-number 32',
+"  \ fzf#vim#with_preview(),
+"  \ <bang>0) 
+"
+"let $FZF_DEFAULT_OPTS='--layout=reverse'
+"let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+"
+"function! FloatingFZF()
+"  let buf = nvim_create_buf(v:false, v:true)
+"  call setbufvar(buf, '&signcolumn', 'no')
+"
+"  let height = &lines - 30
+"  let width = float2nr(&columns - (&columns * 4 / 10))
+"  let col = float2nr((&columns - width) / 2)
+"
+"  let opts = {
+"        \ 'relative': 'editor',
+"        \ 'row': 10,
+"        \ 'col': col,
+"        \ 'width': width,
+"        \ 'height': height
+"        \ }
+"
+"  call nvim_open_win(buf, v:true, opts)
+"endfunction
 
 let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 
@@ -415,8 +418,7 @@ inoremap jk <Esc>
 
 cmap w!! w !sudo tee % >/dev/null
 
-nnoremap <C-p> :FZF<cr>
-nnoremap <M-p> :FZF<cr>
+nnoremap <C-p> :Telescope find_files<cr>
 
 nnoremap <leader>b :call fzf#run({'source': map(filter(range(1, bufnr('$')), 'buflisted(v:val)'),
             \               'bufname(v:val)'),
