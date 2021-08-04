@@ -290,13 +290,14 @@ EOF
 
 " set t_Co=256
 "colorscheme molokai
-set guifont=Hack\ NF:h16
-let g:neovide_transparency=0.8
+"set guifont=font:hsize
+set guifont=Hack\ Nerd\ Font:h8
+"let g:neovide_transparency=0.8
 
 " Color settings
 if has("gui_running")
     set guioptions=egmrt
-    set transparency=15
+    "set transparency=15
     "call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 endif
