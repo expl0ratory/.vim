@@ -294,7 +294,7 @@ EOF
 " set t_Co=256
 "colorscheme molokai
 "set guifont=font:hsize
-set guifont=Hack\ Nerd\ Font:h8
+set guifont=Hack\ Nerd\ Font:h12
 "let g:neovide_transparency=0.8
 
 " Color settings
@@ -424,31 +424,4 @@ cmap w!! w !sudo tee % >/dev/null
 
 nnoremap <C-p> :Telescope find_files<cr>
 
-nnoremap <leader>b :call fzf#run({'source': map(filter(range(1, bufnr('$')), 'buflisted(v:val)'),
-            \               'bufname(v:val)'),
-            \ 'sink': 'e', 'down': '20%'})<cr>
-
 map <F7> :-1r !xclip -o -sel<CR>
-
-let g:qs_enable = 0
-let g:qs_enable_char_list = [ 'f', 'F', 't', 'T' ]
-
-function! Quick_scope_selective(movement)
-    let needs_disabling = 0
-    if !g:qs_enable
-        QuickScopeToggle
-        redraw
-        let needs_disabling = 1
-    endif
-    let letter = nr2char(getchar())
-    if needs_disabling
-        QuickScopeToggle
-    endif
-    return a:movement . letter
-endfunction
-
-for i in g:qs_enable_char_list
-	execute 'noremap <expr> <silent>' . i . " Quick_scope_selective('". i . "')"
-endfor
-
-
