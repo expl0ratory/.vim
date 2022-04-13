@@ -11,6 +11,7 @@ if dein#load_state('/home/alex/.cache/dein')
 
   " Add or remove your plugins here like this:
   " Required:
+    call dein#add('hashivim/vim-terraform')
     call dein#add('projekt0n/github-nvim-theme')
     call dein#add('jacoborus/tender.vim')
     call dein#add('drewtempelmeyer/palenight.vim')
@@ -305,7 +306,7 @@ if has("gui_running")
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 endif
 
-colorscheme github
+colorscheme github_dark
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -376,7 +377,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "pyright", "tsserver" }
+local servers = { "pyright", "tsserver", "terraform-lsp" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
