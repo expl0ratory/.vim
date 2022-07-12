@@ -11,10 +11,8 @@ if dein#load_state('/home/alex/.cache/dein')
 
   " Add or remove your plugins here like this:
   " Required:
-    call dein#add('hashivim/vim-terraform')
-    call dein#add('projekt0n/github-nvim-theme')
     call dein#add('jacoborus/tender.vim')
-    call dein#add('drewtempelmeyer/palenight.vim')
+    call dein#add('EdenEast/nightfox.nvim')
     call dein#add('christoomey/vim-tmux-navigator')
     call dein#add('hoob3rt/lualine.nvim')
     call dein#add('kyazdani42/nvim-web-devicons')
@@ -170,8 +168,6 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
 hi clear SignColumn
-hi Normal guibg=NONE ctermbg=NONE
-hi NonText ctermbg=none guibg=None
 set linespace=2
 
 " tab format
@@ -280,24 +276,17 @@ let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 
 set termguicolors
 
-lua <<EOF
-    require('github-theme').setup({
-        sidebars = {"qf", "vista", "terminal", "nerdtree", "fzf", "FZF"}
-    })
-
-    require('lualine').setup({
-        options = { 
-            theme = 'github'
-        }
-    })
-EOF
+"augroup user_colors
+"  autocmd!
+"  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+"augroup END
 
 " set t_Co=256
-"colorscheme molokai
-"set guifont=font:hsize
-set guifont=Hack\ Nerd\ Font:h12
-"let g:neovide_transparency=0.8
 
+"set guifont=font:hsize
+set guifont=Hack\ Nerd\ Font:h8
+"let g:neovide_transparency=0.8
+colorscheme nightfox
 " Color settings
 if has("gui_running")
     set guioptions=egmrt
@@ -305,8 +294,6 @@ if has("gui_running")
     "call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
     "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 endif
-
-colorscheme github_dark
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -377,7 +364,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "pyright", "tsserver", "terraform-lsp" }
+local servers = { "pyright", "tsserver" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
