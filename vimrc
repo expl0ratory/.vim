@@ -17,6 +17,7 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('hoob3rt/lualine.nvim')
     call dein#add('kyazdani42/nvim-web-devicons')
     call dein#add('neovim/nvim-lspconfig')
+    call dein#add('Maan2003/lsp_lines.nvim')
     call dein#add('nvim-lua/completion-nvim')
     call dein#add('nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'})
     call dein#add('scrooloose/nerdtree')
@@ -30,12 +31,12 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('tpope/vim-fugitive')
     call dein#add('airblade/vim-gitgutter')
     call dein#add('gabrielelana/vim-markdown')
-    "call dein#add('junegunn/fzf')
     call dein#add('nvim-lua/popup.nvim')
     call dein#add('nvim-lua/plenary.nvim')
     call dein#add('nvim-telescope/telescope.nvim')
     call dein#add('liuchengxu/vista.vim')
     call dein#add('joshdick/onedark.vim')
+    call dein#add('psf/black', { 'branch': 'stable' })
   call dein#end()
   call dein#save_state()
 endif
@@ -86,6 +87,11 @@ autocmd CompleteDone * pclose " Closes preview window
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+augroup black_on_save
+    autocmd!
+    autocmd BufWritePre *.py Black
+augroup end
 
 func! DeleteCurBufferNotCloseWindow() abort
     if &modified
@@ -317,6 +323,21 @@ nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
 nnoremap <leader>g :Grepper -tool ag<cr>
 
 lua <<EOF
+
+require("lsp_lines").setup()
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = true
+})
+
+vim.keymap.set(
+  "",
+  "<Leader>d",
+  require("lsp_lines").toggle,
+  { desc = "Toggle lsp_lines" }
+)
+
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -326,6 +347,34 @@ EOF
 
 lua << EOF
 local nvim_lsp = require('lspconfig')
+local util = require('lspconfig/util')
+
+local path = util.path
+
+local function get_python_path(workspace)
+  -- Use activated virtualenv.
+  if vim.env.VIRTUAL_ENV then
+    return path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
+  end
+
+  -- Find and use virtualenv in workspace directory.
+  for _, pattern in ipairs({'*', '.*'}) do
+    local match = vim.fn.glob(path.join(workspace, pattern, 'pyvenv.cfg'))
+    if match ~= '' then
+      return path.join(path.dirname(match), 'bin', 'python')
+    end
+  end
+
+  -- Fallback to system Python.
+  return exepath('python3') or exepath('python') or 'python'
+end
+
+nvim_lsp.pyright.setup({
+  -- ...
+  before_init = function(_, config)
+    config.settings.python.pythonPath = get_python_path(config.root_dir)
+  end
+})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -370,9 +419,19 @@ for _, lsp in ipairs(servers) do
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
-    }
-  }
+    },
+    before_init = function(_, config)
+      config.settings.python.pythonPath = get_python_path(config.root_dir)
+    end
+}
 end
+
+--nvim_lsp.pyright.setup({
+--  -- ...
+--  before_init = function(_, config)
+--    config.settings.python.pythonPath = get_python_path(config.root_dir)
+--  end
+--})
 
 EOF
 
