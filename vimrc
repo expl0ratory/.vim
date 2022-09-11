@@ -1,5 +1,4 @@
-
-" let dein know where it lives
+" let dein know where it lives -- Why do I not use vimplug?  I don't know
 set runtimepath+=/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim
 
 if dein#load_state('/home/alex/.cache/dein')
@@ -11,9 +10,9 @@ if dein#load_state('/home/alex/.cache/dein')
 
   " Add or remove your plugins here like this:
   " Required:
-    call dein#add('jacoborus/tender.vim')
+    call dein#add('EdenEast/nightfox.nvim') " colorscheme
+    call dein#add('jacoborus/tender.vim') " what is this 
     call dein#add('L3MON4D3/LuaSnip') " Used by completion 
-    call dein#add('drewtempelmeyer/palenight.vim')
     call dein#add('christoomey/vim-tmux-navigator')
     call dein#add('hoob3rt/lualine.nvim')
     call dein#add('kyazdani42/nvim-web-devicons')
@@ -30,7 +29,7 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
     call dein#add('ryanoasis/vim-devicons')
     " audit usage
-    call dein#add('preservim/nerdcommenter')
+    call dein#add('preservim/nerdcommenter') " how do
     call dein#add('mrk21/yaml-vim')
     call dein#add('mhinz/vim-grepper')
     call dein#add('tpope/vim-fugitive')
@@ -39,12 +38,11 @@ if dein#load_state('/home/alex/.cache/dein')
     call dein#add('nvim-lua/popup.nvim')
     call dein#add('nvim-lua/plenary.nvim')
     call dein#add('nvim-telescope/telescope.nvim')
-    call dein#add('liuchengxu/vista.vim')
-    call dein#add('joshdick/onedark.vim')
     call dein#add('psf/black', { 'branch': 'stable' })
   call dein#end()
   call dein#save_state()
 endif
+
 
 """"""""""""""""""""""""""""""""""""""""""""
 " General vim
@@ -84,8 +82,10 @@ function! s:show_documentation()
               endif
               endfunction
 
-" Autocomplete bs
-set completeopt=menu,menuone,noselect
+""""""""""""""""""""""""""""""""""""""""""""
+" Autocompletion
+""""""""""""""""""""""""""""""""""""""""""""
+set completeopt=menu,menuone,noinsert,noselect
 
 lua <<EOF
   -- Set up nvim-cmp.
@@ -160,19 +160,27 @@ EOF
 
 "  End autocomplete stuff
 
+" Don't know if anything uses this anymore
 let g:python_host_prog = '/usr/bin/python2.7'
 let g:python3_host_prog = '/usr/bin/python3'
 
 autocmd CompleteDone * pclose " Closes preview window 
+" End don't know 
+
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
-augroup black_on_save
-    autocmd!
-    autocmd BufWritePre *.py Black
-augroup end
+" Need to fix black removing u's / get more in line with what we're using at
+" cratejoy
+"augroup black_on_save
+"    autocmd!
+"    autocmd BufWritePre *.py Black
+"augroup end
 
+""""""""""""""""""""""""""""""""""""""""""""
+" Close current buffer without closing the current window
+""""""""""""""""""""""""""""""""""""""""""""
 func! DeleteCurBufferNotCloseWindow() abort
     if &modified
         echohl ErrorMsg
@@ -205,7 +213,11 @@ func! DeleteCurBufferNotCloseWindow() abort
         exec oldwin 'wincmd w'
     endif
 endfunc
+" End Close current buffer
 
+
+
+" IS this used since I'm using nerdtree?
 " File browser settings
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
@@ -213,6 +225,7 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
 
+" Am I using this at all
 set statusline=   " clear the statusline for when vimrc is reloaded
 set statusline+=%-3.3n\                      " buffer number
 set statusline+=%f\                          " file name
@@ -224,6 +237,7 @@ set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
 "set statusline+=%b,0x%-8B\                   " current char
 set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 set laststatus=2 
+
 
 " vimdiff sexyness
 set diffopt=filler
@@ -287,85 +301,58 @@ vnoremap <C-y> :'<,'>w !xclip -selection clipboard<Cr><Cr>
 " Plugin configs
 """"""""""""""""""""""""""""""""""""""""""""
 
-" Vista tags stuff
-" Call :Vista, maybe bind that to a T thing?
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-set statusline+=%{NearestMethodOrFunction()}
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'ctags'
-let g:vista_executive_for = {
-  \ 'cpp': 'vim_lsp',
-  \ 'php': 'vim_lsp',
-  \ 'py': 'vim_lsp',
-  \ 'python': 'vim_lsp'
-  \ }
-
 let g:grepper = {}
 let g:grepper.tools = ['ag']
-
-"let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
-"let g:fzf_layout = { 'down': '~20%' }
-"let g:fzf_colors =
-"  \ { 'fg':      ['fg', 'Normal'],
-"  \ 'bg':      ['bg', 'Normal'],
-"  \ 'hl':      ['fg', 'Comment'],
-"  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-"  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-"  \ 'hl+':     ['fg', 'Statement'],
-"  \ 'info':    ['fg', 'PreProc'],
-"  \ 'border':  ['fg', 'Ignore'],
-"  \ 'prompt':  ['fg', 'Conditional'],
-"  \ 'pointer': ['fg', 'Exception'],
-"  \ 'marker':  ['fg', 'Keyword'],
-"  \ 'spinner': ['fg', 'Label'],
-"  \ 'header':  ['fg', 'Comment'] }
-"
-""let g:fzf_files_options =
-""  \ '--color "border:#6699cc,info:#fabd2f" --preview "highlight -O ansi --force {} 2> /dev/null"'
-"command! -bang -nargs=* Ag
-"  \ call fzf#vim#ag(
-"  \ <q-args>,
-"  \ ' --color-path 35 --color-match "1;35" --color-line-number 32',
-"  \ fzf#vim#with_preview(),
-"  \ <bang>0) 
-"
-"let $FZF_DEFAULT_OPTS='--layout=reverse'
-"let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-"
-"function! FloatingFZF()
-"  let buf = nvim_create_buf(v:false, v:true)
-"  call setbufvar(buf, '&signcolumn', 'no')
-"
-"  let height = &lines - 30
-"  let width = float2nr(&columns - (&columns * 4 / 10))
-"  let col = float2nr((&columns - width) / 2)
-"
-"  let opts = {
-"        \ 'relative': 'editor',
-"        \ 'row': 10,
-"        \ 'col': col,
-"        \ 'width': width,
-"        \ 'height': height
-"        \ }
-"
-"  call nvim_open_win(buf, v:true, opts)
-"endfunction
 
 let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 
 """"""""""""""""""""""""""""""""""""""""""""
 " Visual stuff
 """"""""""""""""""""""""""""""""""""""""""""
-
 " set t_Co=256
-colorscheme molokai
+lua <<EOF
+-- Default options
+require('nightfox').setup({
+  options = {
+    -- Compiled file's destination location
+    compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+    compile_file_suffix = "_compiled", -- Compiled file suffix
+    transparent = true,    -- Disable setting background
+    terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+    dim_inactive = false,   -- Non focused panes set to alternative background
+    styles = {              -- Style to be applied to different syntax groups
+      comments = "NONE",    -- Value is any valid attr-list value `:help attr-list`
+      conditionals = "NONE",
+      constants = "NONE",
+      functions = "NONE",
+      keywords = "NONE",
+      numbers = "NONE",
+      operators = "NONE",
+      strings = "NONE",
+      types = "NONE",
+      variables = "NONE",
+    },
+    inverse = {             -- Inverse highlight for different types
+      match_paren = false,
+      visual = false,
+      search = false,
+    },
+    modules = {             -- List of various plugins and additional options
+      -- ...
+    },
+  },
+  palettes = {},
+  specs = {},
+  groups = {},
+})
+
+-- setup must be called before loading
+vim.cmd("colorscheme nordfox")
+EOF
+
 "set guifont=font:hsize
 set guifont=Hack\ Nerd\ Font:h8
 "let g:neovide_transparency=0.8
-"colorscheme github_dark
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
