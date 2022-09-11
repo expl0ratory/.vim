@@ -101,6 +101,7 @@ lua <<EOF
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
+
     window = {
       -- completion = cmp.config.window.bordered(),
       -- documentation = cmp.config.window.bordered(),
@@ -497,14 +498,6 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Search in visual selection
 vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
 vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
-
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
-set shortmess+=c
-
-" Open fold under cursor
-nnoremap <space> za
 
 "close buffer without wrecking layout
 nnoremap <Leader>c :call DeleteCurBufferNotCloseWindow()<CR>
