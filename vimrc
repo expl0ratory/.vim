@@ -12,13 +12,18 @@ if dein#load_state('/home/alex/.cache/dein')
   " Add or remove your plugins here like this:
   " Required:
     call dein#add('jacoborus/tender.vim')
-    call dein#add('EdenEast/nightfox.nvim')
+    call dein#add('L3MON4D3/LuaSnip') " Used by completion 
+    call dein#add('drewtempelmeyer/palenight.vim')
     call dein#add('christoomey/vim-tmux-navigator')
     call dein#add('hoob3rt/lualine.nvim')
     call dein#add('kyazdani42/nvim-web-devicons')
     call dein#add('neovim/nvim-lspconfig')
     call dein#add('Maan2003/lsp_lines.nvim')
-    call dein#add('nvim-lua/completion-nvim')
+    call dein#add('hrsh7th/cmp-nvim-lsp')
+    call dein#add('hrsh7th/cmp-buffer')
+    call dein#add('hrsh7th/cmp-path')
+    call dein#add('hrsh7th/cmp-cmdline')
+    call dein#add('hrsh7th/nvim-cmp')
     call dein#add('nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'})
     call dein#add('scrooloose/nerdtree')
     call dein#add('Xuyuanp/nerdtree-git-plugin')
@@ -80,6 +85,81 @@ function! s:show_documentation()
               endfunction
 
 " Autocomplete bs
+set completeopt=menu,menuone,noselect
+
+lua <<EOF
+  -- Set up nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      -- { name = 'vsnip' }, -- For vsnip users.
+      { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Set configuration for specific filetype.
+  cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Set up lspconfig.
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['pyright'].setup {
+    capabilities = capabilities
+  }
+EOF
+
+"  End autocomplete stuff
+
 let g:python_host_prog = '/usr/bin/python2.7'
 let g:python3_host_prog = '/usr/bin/python3'
 
@@ -280,26 +360,12 @@ let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 " Visual stuff
 """"""""""""""""""""""""""""""""""""""""""""
 
-set termguicolors
-
-"augroup user_colors
-"  autocmd!
-"  autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
-"augroup END
-
 " set t_Co=256
-
+colorscheme molokai
 "set guifont=font:hsize
 set guifont=Hack\ Nerd\ Font:h8
 "let g:neovide_transparency=0.8
-colorscheme nightfox
-" Color settings
-if has("gui_running")
-    set guioptions=egmrt
-    "set transparency=15
-    "call rpcnotify(1, 'Gui', 'Font', 'FuraCode Nerd Font 10')
-    "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h13
-endif
+"colorscheme github_dark
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -420,10 +486,10 @@ for _, lsp in ipairs(servers) do
     flags = {
       debounce_text_changes = 150,
     },
-    before_init = function(_, config)
-      config.settings.python.pythonPath = get_python_path(config.root_dir)
-    end
-}
+    cmd_env = {
+      VIRTUAL_ENV = "$HOME/Code/cjdev/services/store/venv"
+    }
+  }
 end
 
 --nvim_lsp.pyright.setup({
@@ -448,7 +514,6 @@ vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 imap <tab> <Plug>(completion_smart_tab)
 imap <s-tab> <Plug>(completion_smart_s_tab)
-set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " Open fold under cursor
