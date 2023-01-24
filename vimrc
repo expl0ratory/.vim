@@ -1,57 +1,47 @@
-" let dein know where it lives -- Why do I not use vimplug?  I don't know
-set runtimepath+=/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('/home/alex/.cache/dein')
-  call dein#begin('/home/alex/.cache/dein')
-
-  " Let dein manage dein
-  " Required:
-  call dein#add('/home/alex/.cache/dein/repos/github.com/Shougo/dein.vim')
+call plug#begin()
 
   " Add or remove your plugins here like this:
-  " Required:
-    call dein#add('EdenEast/nightfox.nvim') " colorscheme
-    call dein#add('jacoborus/tender.vim') " what is this 
-    call dein#add('L3MON4D3/LuaSnip') " Used by completion 
-    call dein#add('christoomey/vim-tmux-navigator')
-    call dein#add('hoob3rt/lualine.nvim')
-    call dein#add('kyazdani42/nvim-web-devicons')
-    call dein#add('neovim/nvim-lspconfig')
-    call dein#add('Maan2003/lsp_lines.nvim')
-    call dein#add('hrsh7th/cmp-nvim-lsp')
-    call dein#add('hrsh7th/cmp-buffer')
-    call dein#add('hrsh7th/cmp-path')
-    call dein#add('hrsh7th/cmp-cmdline')
-    call dein#add('hrsh7th/nvim-cmp')
-    call dein#add('nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'})
-    call dein#add('scrooloose/nerdtree')
-    call dein#add('Xuyuanp/nerdtree-git-plugin')
-    call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
-    call dein#add('ryanoasis/vim-devicons')
-    " audit usage
-    call dein#add('preservim/nerdcommenter') " how do
-    call dein#add('mrk21/yaml-vim')
-    call dein#add('mhinz/vim-grepper')
-    call dein#add('tpope/vim-fugitive')
-    call dein#add('airblade/vim-gitgutter')
-    call dein#add('gabrielelana/vim-markdown')
-    call dein#add('nvim-lua/popup.nvim')
-    call dein#add('nvim-lua/plenary.nvim')
-    call dein#add('nvim-telescope/telescope.nvim')
-    call dein#add('psf/black', { 'branch': 'stable' })
-  call dein#end()
-  call dein#save_state()
-endif
+    Plug 'rebelot/kanagawa.nvim'
+    Plug 'fatih/vim-go' " go tools
+    Plug 'L3MON4D3/LuaSnip' " Used by completion 
+    Plug 'hoob3rt/lualine.nvim'
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'neovim/nvim-lspconfig' " So you can config lsps, derp
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " magical syntax highligher, in theory more
+    Plug 'scrooloose/nerdtree' " boujee file navigator
+    Plug 'Xuyuanp/nerdtree-git-plugin' 
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'ryanoasis/vim-devicons' 
+    Plug 'christoomey/vim-tmux-navigator' " ctrl-hjkl for pane/window nav, pretty seamless
+    Plug 'preservim/nerdcommenter' "  <leader>c<space>
+    Plug 'mrk21/yaml-vim'  " yaml highlighter
+    Plug 'mhinz/vim-grepper'  " <leader>g
+    Plug 'tpope/vim-fugitive'  " git stuff
+    Plug 'airblade/vim-gitgutter' 
+    Plug 'gabrielelana/vim-markdown' " markdown highlighter? 
+    Plug 'wfxr/protobuf.vim' " protobuf highlighter?
+    Plug 'nvim-lua/plenary.nvim'  " requirement for telescope
+    Plug 'nvim-telescope/telescope.nvim'
+
+call plug#end()
 
 
 """"""""""""""""""""""""""""""""""""""""""""
 " General vim
 """"""""""""""""""""""""""""""""""""""""""""
 set nocompatible
+
 "set clipboard+=unnamedplus
 "let g:loaded_clipboard_provider = 1
 
 set encoding=utf-8
+
 " Ideally, no tags ever needed again if language server can do it
 set tags=project.tags
 
@@ -60,7 +50,6 @@ set hidden
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-"set relativenumbers
 set nocursorline
 set nocursorcolumn
 set synmaxcol=200
@@ -72,15 +61,8 @@ set ttimeoutlen=100
 
 " stop at underscores as word delimiters
 " set iskeyword-=_
-set number
 
-function! s:show_documentation()
-  if &filetype == 'vim'
-      execute 'h '.expand('<cword>')
-        else
-            call CocAction('doHover')
-              endif
-              endfunction
+set number
 
 """"""""""""""""""""""""""""""""""""""""""""
 " Autocompletion
@@ -93,18 +75,14 @@ lua <<EOF
 
   cmp.setup({
     snippet = {
-      -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
 
     window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -115,10 +93,7 @@ lua <<EOF
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      -- { name = 'vsnip' }, -- For vsnip users.
       { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
     })
@@ -152,32 +127,24 @@ lua <<EOF
   })
 
   -- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
   require('lspconfig')['pyright'].setup {
     capabilities = capabilities
   }
+
+  require('lspconfig')['gopls'].setup {
+    capabilities = capabilities
+  }
+
 EOF
 
-"  End autocomplete stuff
-
-" Don't know if anything uses this anymore
-let g:python_host_prog = '/usr/bin/python2.7'
-let g:python3_host_prog = '/usr/bin/python3'
+" End autocomplete stuff
 
 autocmd CompleteDone * pclose " Closes preview window 
-" End don't know 
-
 
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-" Need to fix black removing u's / get more in line with what we're using at
-" cratejoy
-"augroup black_on_save
-"    autocmd!
-"    autocmd BufWritePre *.py Black
-"augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""
 " Close current buffer without closing the current window
@@ -216,34 +183,19 @@ func! DeleteCurBufferNotCloseWindow() abort
 endfunc
 " End Close current buffer
 
-
-
-" IS this used since I'm using nerdtree?
-" File browser settings
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
-
 " Am I using this at all
-set statusline=   " clear the statusline for when vimrc is reloaded
-set statusline+=%-3.3n\                      " buffer number
-set statusline+=%f\                          " file name
-set statusline+=%h%m%r%w                     " flags
-set statusline+=[%{strlen(&ft)?&ft:'none'},\  " filetype
-set statusline+=%{&fileformat}]\              " file format
-set statusline+=%=                           " right align
-set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
-"set statusline+=%b,0x%-8B\                   " current char
-set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
-set laststatus=2 
+" set statusline=   " clear the statusline for when vimrc is reloaded
+" set statusline+=%-3.3n\                      " buffer number
+" set statusline+=%f\                          " file name
+" set statusline+=%h%m%r%w                     " flags
+" set statusline+=[%{strlen(&ft)?&ft:'none'},\  " filetype
+" set statusline+=%{&fileformat}]\              " file format
+" set statusline+=%=                           " right align
+" set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
+" "set statusline+=%b,0x%-8B\                   " current char
+" set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+" set laststatus=2 
 
-
-" vimdiff sexyness
-set diffopt=filler
-set diffopt+=iwhite
- 
 autocmd BufWritePre *.py,*.js,*.hs,*.html,*.css,*.scss :%s/\s\+$//e
 au FileType html setlocal indentkeys-=*<Return>
 
@@ -263,10 +215,10 @@ set wildignore=*.class,*.jar,*.swf,*.swc,*.git,*.jpg,*.png,*.mp3,*.pyc,*/build/*
 set hlsearch
 set smartcase
 
-set fillchars=vert:│
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+"set fillchars=vert:│
+"let g:indent_guides_auto_colors = 0
+"let g:indent_guides_guide_size = 1
+"let g:indent_guides_enable_on_vim_startup = 1
 
 hi clear SignColumn
 set linespace=2
@@ -291,12 +243,8 @@ set hidden
 
 autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 noexpandtab
 
-"set clipboard=unnamedplus
-"if $TMUX == ''
-"    set clipboard+=unnamed
-"endif 
-
 vnoremap <C-y> :'<,'>w !xclip -selection clipboard<Cr><Cr>
+vnoremap <C-v> <ESC>"+p
 
 """"""""""""""""""""""""""""""""""""""""""""
 " Plugin configs
@@ -310,50 +258,13 @@ let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 """"""""""""""""""""""""""""""""""""""""""""
 " Visual stuff
 """"""""""""""""""""""""""""""""""""""""""""
-" set t_Co=256
-lua <<EOF
--- Default options
-require('nightfox').setup({
-  options = {
-    -- Compiled file's destination location
-    compile_path = vim.fn.stdpath("cache") .. "/nightfox",
-    compile_file_suffix = "_compiled", -- Compiled file suffix
-    transparent = true,    -- Disable setting background
-    terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-    dim_inactive = false,   -- Non focused panes set to alternative background
-    styles = {              -- Style to be applied to different syntax groups
-      comments = "NONE",    -- Value is any valid attr-list value `:help attr-list`
-      conditionals = "NONE",
-      constants = "NONE",
-      functions = "NONE",
-      keywords = "NONE",
-      numbers = "NONE",
-      operators = "NONE",
-      strings = "NONE",
-      types = "NONE",
-      variables = "NONE",
-    },
-    inverse = {             -- Inverse highlight for different types
-      match_paren = false,
-      visual = false,
-      search = false,
-    },
-    modules = {             -- List of various plugins and additional options
-      -- ...
-    },
-  },
-  palettes = {},
-  specs = {},
-  groups = {},
-})
+set t_Co=256
 
--- setup must be called before loading
-vim.cmd("colorscheme nordfox")
-EOF
+colorscheme kanagawa
 
 "set guifont=font:hsize
 set guifont=Hack\ Nerd\ Font:h8
-"let g:neovide_transparency=0.8
+let g:neovide_transparency=0.8
 
 " syntax highlighting tweaks
 let python_print_as_function = 1
@@ -377,29 +288,7 @@ nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
 nnoremap <leader>g :Grepper -tool ag<cr>
 
 lua <<EOF
-
-require("lsp_lines").setup()
-
-vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = true
-})
-
-vim.keymap.set(
-  "",
-  "<Leader>d",
-  require("lsp_lines").toggle,
-  { desc = "Toggle lsp_lines" }
-)
-
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-  },
-}
-EOF
-
-lua << EOF
+ 
 local nvim_lsp = require('lspconfig')
 local util = require('lspconfig/util')
 
@@ -430,16 +319,25 @@ nvim_lsp.pyright.setup({
   end
 })
 
+nvim_lsp.gopls.setup {
+    cmd = {"gopls", "serve"},
+    filetypes = {"go", "gomod"},
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+      },
+    },
+}
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  on_attach=require'completion'.on_attach
-  require'completion'.on_attach()
-  --Enable completion triggered by <c-x><c-o>
-  --buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -487,7 +385,22 @@ end
 --  end
 --})
 
+  function go_org_imports(wait_ms)
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {"source.organizeImports"}}
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
+  end
 EOF
+
+autocmd BufWritePre *.go lua go_org_imports()
 
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
@@ -498,6 +411,14 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Search in visual selection
 vnoremap / <Esc>/\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
 vnoremap ? <Esc>?\%><C-R>=line("'<")-1<CR>l\%<<C-R>=line("'>")+1<CR>l
+
+let g:lsc_server_commands = {
+\  "go": {
+\    "command": "gopls serve",
+\    "log_level": -1,
+\    "suppress_stderr": v:true,
+\  },
+\}
 
 "close buffer without wrecking layout
 nnoremap <Leader>c :call DeleteCurBufferNotCloseWindow()<CR>
@@ -515,5 +436,3 @@ inoremap jk <Esc>
 cmap w!! w !sudo tee % >/dev/null
 
 nnoremap <C-p> :Telescope find_files<cr>
-
-map <F7> :-1r !xclip -o -sel<CR>
