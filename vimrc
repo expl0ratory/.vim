@@ -2,6 +2,10 @@
 call plug#begin()
 
   " Add or remove your plugins here like this:
+  
+    Plug 'othree/html5.vim'
+    Plug 'pangloss/vim-javascript'
+    Plug 'evanleck/vim-svelte', {'branch': 'main'}
     Plug 'rebelot/kanagawa.nvim'
     Plug 'fatih/vim-go' " go tools
     Plug 'L3MON4D3/LuaSnip' " Used by completion 
@@ -263,7 +267,7 @@ set t_Co=256
 colorscheme kanagawa
 
 "set guifont=font:hsize
-set guifont=Hack\ Nerd\ Font:h8
+set guifont=Hack\ Nerd\ Font:h14
 let g:neovide_transparency=0.8
 
 " syntax highlighting tweaks
@@ -427,6 +431,11 @@ vnoremap < <gv
 vnoremap > >gv
 vnoremap y myy`y
 vnoremap Y myY`y
+
+map <D-v> "+p<CR>
+map! <D-v> <C-R>+
+tmap <D-v> <C-R>+
+vmap <D-c> "+y<CR>
 
 noremap <leader>p :bprevious<CR>
 noremap <leader>n :bnext<CR>
