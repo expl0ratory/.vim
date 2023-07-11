@@ -6,6 +6,8 @@ call plug#begin()
     Plug 'othree/html5.vim'
     Plug 'pangloss/vim-javascript'
     Plug 'evanleck/vim-svelte', {'branch': 'main'}
+    Plug 'HerringtonDarkholme/yats.vim'
+    Plug 'dgagn/diagflow.nvim'
     Plug 'rebelot/kanagawa.nvim'
     Plug 'fatih/vim-go' " go tools
     Plug 'L3MON4D3/LuaSnip' " Used by completion 
@@ -18,6 +20,7 @@ call plug#begin()
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " magical syntax highligher, in theory more
+    Plug 'nvim-treesitter/nvim-treesitter-context' 
     Plug 'scrooloose/nerdtree' " boujee file navigator
     Plug 'Xuyuanp/nerdtree-git-plugin' 
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -41,7 +44,7 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""
 set nocompatible
 
-"set clipboard+=unnamedplus
+set clipboard+=unnamedplus
 "let g:loaded_clipboard_provider = 1
 
 set encoding=utf-8
@@ -74,6 +77,23 @@ set number
 set completeopt=menu,menuone,noinsert,noselect
 
 lua <<EOF
+    require('diagflow').setup()
+
+    require'treesitter-context'.setup{
+        enable = true,
+        max_lines = 0,
+        min_window_height = 0,
+        line_numbers = true,
+        multiline_threshold = 20,
+        trim_scop = 'outer',
+        mode = 'cursor',
+        separator = nil,
+        zindex=20
+    }
+
+EOF
+
+lua <<EOF
   -- Set up nvim-cmp.
   local cmp = require'cmp'
 
@@ -89,7 +109,6 @@ lua <<EOF
       documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
@@ -264,10 +283,25 @@ let g:NERDTreeIgnore = ['^node_modules$', 'pyc$']
 """"""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
 
-colorscheme kanagawa
+lua <<EOF
+
+require('kanagawa').setup({
+    compile = false,             -- enable compiling the colorscheme
+    undercurl = true,            -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = {},
+    keywordStyle = { italic = true},
+    statementStyle = { bold = true },
+    typeStyle = {},
+    transparent = true,         -- do not set background color
+}) 
+
+vim.cmd("colorscheme kanagawa")
+
+EOF
 
 "set guifont=font:hsize
-set guifont=Hack\ Nerd\ Font:h14
+set guifont=Hack\ Nerd\ Font:h10
 let g:neovide_transparency=0.8
 
 " syntax highlighting tweaks
@@ -350,7 +384,6 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -444,3 +477,4 @@ inoremap jk <Esc>
 cmap w!! w !sudo tee % >/dev/null
 
 nnoremap <C-p> :Telescope find_files<cr>
+nnoremap <leader>b :Telescope buffers<cr>
